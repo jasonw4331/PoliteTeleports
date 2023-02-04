@@ -11,6 +11,8 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\utils\Config;
 use Symfony\Component\Filesystem\Path;
+use function is_bool;
+use function is_int;
 
 class Main extends PluginBase implements Listener{
 
@@ -24,7 +26,7 @@ class Main extends PluginBase implements Listener{
 		$this->getServer()->getCommandMap()->registerAll($this->getName(), [
 			new commands\TpAskCommand($this),
 			new commands\TpAcceptCommand($this),
-			//new commands\TpConfig($this),
+			new commands\TpConfig($this),
 			new commands\TpDenyCommand($this),
 			new commands\TpaHereCommand($this),
 		]);
@@ -48,7 +50,7 @@ class Main extends PluginBase implements Listener{
 		$playerConfig = new Config(
 			Path::join($this->getDataFolder(), "players", $player->getName() . ".json"),
 			Config::JSON,
-			(array)$this->getConfig()->get("Defaults", [
+			(array) $this->getConfig()->get("Defaults", [
 				"Teleport Delay" => 5,
 				"Teleport Countdown" => true,
 				"Alert Teleporting" => true,
@@ -88,9 +90,29 @@ class Main extends PluginBase implements Listener{
 	}
 
 	/**
-	 * @return array<int|bool>|null
+	 * @return array<int|bool|string>|null
 	 */
 	public static function getPlayerSettings(string $playerName) : ?array {
 		return self::$playerSettings[$playerName];
+	}
+
+	/**
+	 * @param array<int|bool|string>  $settings
+	 */
+	public static function updatePlayerSettings(string $playerName, array $settings) : void {
+		// validate settings
+		if(!isset(self::$playerSettings[$playerName]))
+			throw new \InvalidArgumentException("Player $playerName does not exist");
+
+		if(!isset($settings["Teleport Delay"]) || !is_int($settings["Teleport Delay"]))
+			throw new \InvalidArgumentException("Teleport Delay must be an integer");
+		if(!isset($settings["Teleport Countdown"]) || !is_bool($settings["Teleport Countdown"]))
+			throw new \InvalidArgumentException("Teleport Countdown must be a boolean");
+		if(!isset($settings["Alert Teleporting"]) || !is_bool($settings["Alert Teleporting"]))
+			throw new \InvalidArgumentException("Alert Teleporting must be a boolean");
+		if(!isset($settings["Alert Receiver"]) || !is_bool($settings["Alert Receiver"]))
+			throw new \InvalidArgumentException("Alert Receiver must be a boolean");
+
+		self::$playerSettings[$playerName] = $settings;
 	}
 }
