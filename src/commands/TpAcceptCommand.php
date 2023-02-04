@@ -110,7 +110,7 @@ class TpAcceptCommand extends Command implements PluginOwned{
 						if(Main::getPlayerSettings($fromTarget->getName())['Alert Teleporting'])
 							$fromTarget->sendMessage("Teleport to ".$toTarget->getName()." failed. Retrying...");
 
-						$finalTick += 5 * 20; // retry teleport in 5 seconds
+						$finalTick += $this->owningPlugin->getConfig()->get('Retry Interval', 5) * 20; // retry teleport in configured seconds
 						return;
 					}
 
