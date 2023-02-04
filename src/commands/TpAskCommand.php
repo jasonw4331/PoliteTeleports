@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace jasonwynn10\PoliteTeleports\commands;
 
+use jasonwynn10\PoliteTeleports\lang\CustomKnownTranslationFactory;
 use jasonwynn10\PoliteTeleports\Main;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -20,8 +21,8 @@ class TpAskCommand extends Command implements PluginOwned{
 		$this->setOwningPlugin($owningPlugin);
 		parent::__construct(
 			"tpask",
-			"Send a request to teleport to another player",
-			"/tpask <player: target>",
+			CustomKnownTranslationFactory::command_tpask_description(),
+			CustomKnownTranslationFactory::command_tpask_usage(),
 			["tpa"]
 		);
 		$this->setPermission('PoliteTeleports.command.tpask');
@@ -39,10 +40,10 @@ class TpAskCommand extends Command implements PluginOwned{
 		}
 		$player = $this->owningPlugin->getServer()->getPlayerByPrefix($args[0]);
 		if($player === null) {
-			$sender->sendMessage(TextFormat::RED . "Can't find player " . $args[0]);
+			$sender->sendMessage(CustomKnownTranslationFactory::command_tpask_noplayer($args[0])->prefix(TextFormat::RED));
 			return;
 		}
 		$this->owningPlugin->addRequest($sender->getName(), $player->getName(), $sender->getName());
-		$sender->sendMessage("Teleport request sent to ".$player->getName());
+		$sender->sendMessage(CustomKnownTranslationFactory::command_tpask_success($player->getName()));
 	}
 }
