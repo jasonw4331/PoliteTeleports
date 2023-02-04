@@ -46,6 +46,7 @@ class TpDenyCommand extends Command implements PluginOwned{
 			foreach($this->owningPlugin->getActiveRequests()[$sender->getName()] as $request) {
 				if($request->getFromTarget() === $target->getName() or $request->getToTarget() === $target->getName()) {
 					$request->cancel();
+					$sender->sendMessage('Denied request from '.$target->getName());
 					return;
 				}
 			}
@@ -54,5 +55,6 @@ class TpDenyCommand extends Command implements PluginOwned{
 		}
 		$request = array_pop($this->owningPlugin->getActiveRequests()[$sender->getName()]);
 		$request->cancel();
+		$sender->sendMessage('Denied request from '.$request->getFromTarget());
 	}
 }
