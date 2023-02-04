@@ -45,12 +45,16 @@ class Main extends PluginBase implements Listener{
 
 	public function onPlayerJoin(PlayerJoinEvent $event) : void {
 		$player = $event->getPlayer();
-		$playerConfig = new Config(Path::join($this->getDataFolder(), "players", $player->getName() . ".json"), Config::JSON, [
-			"Teleport Delay" => 5,
-			"Teleport Countdown" => true,
-			"Alert Teleporting" => true,
-			"Alert Receiver" => true,
-		]);
+		$playerConfig = new Config(
+			Path::join($this->getDataFolder(), "players", $player->getName() . ".json"),
+			Config::JSON,
+			(array)$this->getConfig()->get("Defaults", [
+				"Teleport Delay" => 5,
+				"Teleport Countdown" => true,
+				"Alert Teleporting" => true,
+				"Alert Receiver" => true,
+			])
+		);
 		self::$playerSettings[$player->getName()] = $playerConfig->getAll();
 	}
 
