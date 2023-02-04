@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace jasonwynn10\PoliteTeleports\commands;
 
+use jasonwynn10\PoliteTeleports\lang\CustomKnownTranslationFactory;
 use jasonwynn10\PoliteTeleports\Main;
+use jasonwynn10\PoliteTeleports\TeleportRequest;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\plugin\PluginOwned;
@@ -19,8 +21,8 @@ class TpDenyCommand extends Command implements PluginOwned{
 		$this->setOwningPlugin($owningPlugin);
 		parent::__construct(
 			"tpdeny",
-			"Deny a teleport request",
-			"/tpdeny [player: target]",
+			CustomKnownTranslationFactory::command_tpdeny_description(),
+			CustomKnownTranslationFactory::command_tpdeny_usage(),
 			["tpno", "tpdeny", "tpd", "tpcancel"]
 		);
 		$this->setPermission('PoliteTeleports.command.tpdeny');
@@ -34,27 +36,28 @@ class TpDenyCommand extends Command implements PluginOwned{
 			return;
 		}
 		if(!isset($this->owningPlugin->getActiveRequests()[$sender->getName()]) or count($this->owningPlugin->getActiveRequests()[$sender->getName()]) === 0) {
-			$sender->sendMessage("You have no active requests");
+			$sender->sendMessage(CustomKnownTranslationFactory::command_tpdeny_norequest());
 			return;
 		}
 		if(isset($args[0])) {
 			$target = $this->owningPlugin->getServer()->getPlayerByPrefix($args[0]);
 			if($target === null) {
-				$sender->sendMessage(TextFormat::RED . "Can't find player " . $args[0]);
+				$sender->sendMessage(CustomKnownTranslationFactory::command_tpdeny_noplayer($args[0])->prefix(TextFormat::RED));
 				return;
 			}
 			foreach($this->owningPlugin->getActiveRequests()[$sender->getName()] as $request) {
 				if($request->getFromTarget() === $target->getName() or $request->getToTarget() === $target->getName()) {
 					$request->cancel();
-					$sender->sendMessage('Denied request from '.$target->getName());
+					$sender->sendMessage(CustomKnownTranslationFactory::command_tpdeny_success($target->getName()));
 					return;
 				}
 			}
-			$sender->sendMessage("You have no active requests from ".$target->getName());
+			$sender->sendMessage(CustomKnownTranslationFactory::command_tpdeny_norequestplayer($target->getName())->prefix(TextFormat::RED));
 			return;
 		}
+		/** @var TeleportRequest $request */
 		$request = array_pop($this->owningPlugin->getActiveRequests()[$sender->getName()]);
 		$request->cancel();
-		$sender->sendMessage('Denied request from '.$request->getFromTarget());
+		$sender->sendMessage(CustomKnownTranslationFactory::command_tpdeny_success($request->getRequester()));
 	}
 }
