@@ -32,9 +32,12 @@ final class CustomKnownTranslationKeys{
 	public const COMMAND_TPCONFIG_COUNTDOWN_DESCRIPTION = "command.tpconfig.countdown.description";
 	public const COMMAND_TPCONFIG_DELAY_DESCRIPTION = "command.tpconfig.delay.description";
 	public const COMMAND_TPCONFIG_DELAY_OFF = "command.tpconfig.delay.off";
+	public const COMMAND_TPCONFIG_DELAY_SECONDS = "command.tpconfig.delay.seconds";
 	public const COMMAND_TPCONFIG_DESCRIPTION = "command.tpconfig.description";
+	public const COMMAND_TPCONFIG_DISPLAY = "command.tpconfig.display";
 	public const COMMAND_TPCONFIG_HEADER = "command.tpconfig.header";
 	public const COMMAND_TPCONFIG_INTVALUE = "command.tpconfig.intvalue";
+	public const COMMAND_TPCONFIG_INVALID = "command.tpconfig.invalid";
 	public const COMMAND_TPCONFIG_LANGUAGE_DESCRIPTION = "command.tpconfig.language.description";
 	public const COMMAND_TPCONFIG_LANGUAGE_INVALID = "command.tpconfig.language.invalid";
 	public const COMMAND_TPCONFIG_NOVALUE = "command.tpconfig.novalue";

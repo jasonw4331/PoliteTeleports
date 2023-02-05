@@ -109,8 +109,19 @@ final class CustomKnownTranslationFactory{
 		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPCONFIG_DELAY_OFF, []);
 	}
 
+	public static function command_tpconfig_delay_seconds() : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPCONFIG_DELAY_SECONDS, []);
+	}
+
 	public static function command_tpconfig_description() : Translatable{
 		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPCONFIG_DESCRIPTION, []);
+	}
+
+	public static function command_tpconfig_display(Translatable|string $param0, Translatable|string $param1) : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPCONFIG_DISPLAY, [
+			0 => $param0,
+			1 => $param1,
+		]);
 	}
 
 	public static function command_tpconfig_header() : Translatable{
@@ -119,6 +130,10 @@ final class CustomKnownTranslationFactory{
 
 	public static function command_tpconfig_intvalue() : Translatable{
 		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPCONFIG_INTVALUE, []);
+	}
+
+	public static function command_tpconfig_invalid() : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPCONFIG_INVALID, []);
 	}
 
 	public static function command_tpconfig_language_description() : Translatable{
