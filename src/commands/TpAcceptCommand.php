@@ -56,7 +56,7 @@ class TpAcceptCommand extends Command implements PluginOwned{
 						$sender->sendMessage("The other player is no longer online");
 						return;
 					}
-					$this->teleportToPlayer($request, Main::getPlayerSettings($request->getFromTarget())['Teleport Delay'] * 20);
+					$this->owningPlugin->getScheduler()->scheduleRepeatingTask(new HandleTeleportTask($request, Main::getPlayerSettings($request->getFromTarget())['Teleport Delay'] * 20), 20);
 					return;
 				}
 			}
@@ -71,67 +71,6 @@ class TpAcceptCommand extends Command implements PluginOwned{
 			$sender->sendMessage("The other player is no longer online");
 			return;
 		}
-		$this->teleportToPlayer($request, Main::getPlayerSettings($request->getFromTarget())['Teleport Delay'] * 20);
-	}
-
-	private function teleportToPlayer(TeleportRequest &$request, int $delayTicks) : void {
-		$finalTick = Server::getInstance()->getTick() + $delayTicks;
-		$this->owningPlugin->getScheduler()->scheduleRepeatingTask(
-			new ClosureTask(\Closure::fromCallable(
-				static function() use (&$request, &$finalTick) : void {
-					$requester = $request->getRequester();
-					$fromTarget = Server::getInstance()->getPlayerExact($request->getFromTarget());
-					if($fromTarget === null) { // player offline
-						Server::getInstance()->getPlayerExact($requester)?->sendMessage("The teleporting player is no longer online");
-						throw new CancelTaskException();
-					}
-					$toTarget = Server::getInstance()->getPlayerExact($request->getToTarget());
-					if($toTarget === null) { // player offline
-						Server::getInstance()->getPlayerExact($requester)?->sendMessage("The receiving player is no longer online");
-						throw new CancelTaskException();
-					}
-
-					if($request->isCancelled()) { // player first approved tp then denied while waiting
-						if(Main::getPlayerSettings($fromTarget->getName())['Alert Teleporting'])
-							$fromTarget->sendMessage("Teleport denied.");
-
-						if(Main::getPlayerSettings($toTarget->getName())['Alert Receiver'])
-							$fromTarget->sendMessage("Teleport denied.");
-						throw new CancelTaskException();
-					}
-
-					$tickDiff = $finalTick - Server::getInstance()->getTick();
-					if($tickDiff >= 20 and Main::getPlayerSettings($fromTarget->getName())['Teleport Countdown']) {
-						$fromTarget->sendMessage("Teleporting in ".ceil($tickDiff / 20)." second(s)");
-						return;
-					}
-
-					if(!$fromTarget->teleport($toTarget->getLocation())) { // likely tp event cancelled by other plugin
-						if(Main::getPlayerSettings($fromTarget->getName())['Alert Teleporting'])
-							$fromTarget->sendMessage("Teleport to ".$toTarget->getName()." failed. Retrying...");
-
-						$finalTick += $this->owningPlugin->getConfig()->get('Retry Interval', 5) * 20; // retry teleport in configured seconds
-						return;
-					}
-
-					// inform admins of player teleport
-					Command::broadcastCommandMessage(
-						Server::getInstance()->getPlayerExact($requester),
-						KnownTranslationFactory::commands_tp_success($fromTarget->getName(), $toTarget->getName())
-					);
-
-					if(Main::getPlayerSettings($fromTarget->getName())['Alert Teleporting'])
-						$fromTarget->sendMessage("Teleported to ".$toTarget->getName());
-
-					if(Main::getPlayerSettings($toTarget->getName())['Alert Receiver'])
-						$toTarget->sendMessage($fromTarget->getName()." has teleported to you");
-
-					$request->cancel(); // request can now be removed from the queue
-
-					throw new CancelTaskException;
-				}
-			)),
-			20
-		);
+		$this->owningPlugin->getScheduler()->scheduleRepeatingTask(new HandleTeleportTask($request, Main::getPlayerSettings($request->getFromTarget())['Teleport Delay'] * 20), 20);
 	}
 }
