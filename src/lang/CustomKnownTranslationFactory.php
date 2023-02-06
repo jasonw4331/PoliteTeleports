@@ -193,15 +193,4 @@ final class CustomKnownTranslationFactory{
 		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPDENY_USAGE, []);
 	}
 
-	public static function language_name() : Translatable{
-		return new Translatable(CustomKnownTranslationKeys::LANGUAGE_NAME, []);
-	}
-
-	public static function language_selected(Translatable|string $param0, Translatable|string $param1) : Translatable{
-		return new Translatable(CustomKnownTranslationKeys::LANGUAGE_SELECTED, [
-			0 => $param0,
-			1 => $param1,
-		]);
-	}
-
 }

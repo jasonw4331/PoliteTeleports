@@ -50,6 +50,4 @@ final class CustomKnownTranslationKeys{
 	public const COMMAND_TPDENY_OFFLINE = "command.tpdeny.offline";
 	public const COMMAND_TPDENY_SUCCESS = "command.tpdeny.success";
 	public const COMMAND_TPDENY_USAGE = "command.tpdeny.usage";
-	public const LANGUAGE_NAME = "language.name";
-	public const LANGUAGE_SELECTED = "language.selected";
 }
