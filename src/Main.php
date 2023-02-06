@@ -113,8 +113,8 @@ class Main extends PluginBase implements Listener{
 		$refClass = new \ReflectionClass($language);
 		$refProp = $refClass->getProperty('lang');
 		$refProp->setAccessible(true);
-		$lang = $refProp->getValue($language, []);
-		$lang = array_merge($lang, self::$languages[self::$playerSettings[$player->getName()]["Language"]]->getAll());
+		$lang = $refProp->getValue($language);
+		$lang = array_merge($lang, self::$languages[$playerConfig->get('Language', 'eng')]->getAll());
 		$refProp->setValue($language, $lang);
 	}
 
