@@ -99,6 +99,7 @@ class Main extends PluginBase implements Listener{
 			Path::join($this->getDataFolder(), "players", $player->getName() . ".json"),
 			Config::JSON,
 			(array) $this->getConfig()->get("Defaults", [
+				"Language" => "eng",
 				"Teleport Delay" => 5,
 				"Teleport Countdown" => true,
 				"Alert Teleporting" => true,
@@ -106,6 +107,15 @@ class Main extends PluginBase implements Listener{
 			])
 		);
 		self::$playerSettings[$player->getName()] = $playerConfig->getAll();
+
+		// add translations to existing player language instance
+		$language = $player->getLanguage();
+		$refClass = new \ReflectionClass($language);
+		$refProp = $refClass->getProperty('lang');
+		$refProp->setAccessible(true);
+		$lang = $refProp->getValue($language, []);
+		$lang = array_merge($lang, self::$languages[self::$playerSettings[$player->getName()]["Language"]]->getAll());
+		$refProp->setValue($language, $lang);
 	}
 
 	public function onPlayerQuit(PlayerQuitEvent $event) : void {
