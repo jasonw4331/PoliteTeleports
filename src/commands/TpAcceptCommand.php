@@ -54,6 +54,7 @@ class TpAcceptCommand extends Command implements PluginOwned{
 						return;
 					}
 					$this->owningPlugin->getScheduler()->scheduleRepeatingTask(new HandleTeleportTask($request, Main::getPlayerSettings($request->getFromTarget())['Teleport Delay'] * 20), 20);
+					$sender->sendMessage(CustomKnownTranslationFactory::command_tpaccept_success());
 					return;
 				}
 			}
@@ -69,5 +70,6 @@ class TpAcceptCommand extends Command implements PluginOwned{
 			return;
 		}
 		$this->owningPlugin->getScheduler()->scheduleRepeatingTask(new HandleTeleportTask($request, Main::getPlayerSettings($request->getFromTarget())['Teleport Delay'] * 20), 20);
+		$sender->sendMessage(CustomKnownTranslationFactory::command_tpaccept_success());
 	}
 }
