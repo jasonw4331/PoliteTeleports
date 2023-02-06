@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace jasonwynn10\PoliteTeleports\commands;
@@ -10,13 +11,19 @@ use pocketmine\command\CommandSender;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\plugin\PluginOwnedTrait;
 use pocketmine\utils\TextFormat;
+use function array_keys;
+use function array_shift;
+use function count;
+use function in_array;
+use function is_bool;
+use function mb_strtolower;
 
 final class TpConfig extends Command implements PluginOwned{
-	use PluginOwnedTrait{
+	use PluginOwnedTrait {
 		__construct as private setOwningPlugin;
 	}
 
-	public function __construct(private Main $owningPlugin) {
+	public function __construct(private Main $owningPlugin){
 		$this->setOwningPlugin($owningPlugin);
 		parent::__construct(
 			"tpconfig",
@@ -31,13 +38,13 @@ final class TpConfig extends Command implements PluginOwned{
 	 * @inheritDoc
 	 */
 	public function execute(CommandSender $sender, string $commandLabel, array $args){
-		if(!$this->testPermission($sender)) {
+		if(!$this->testPermission($sender)){
 			return;
 		}
 
 		$playerSettings = $this->owningPlugin->getPlayerSettings($sender->getName());
 
-		if(count($args) < 1) {
+		if(count($args) < 1){
 			// print existing setting values
 			$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_header()->prefix(TextFormat::GREEN));
 
@@ -52,11 +59,9 @@ final class TpConfig extends Command implements PluginOwned{
 			$sender->sendMessage(
 				CustomKnownTranslationFactory::command_tpconfig_display(
 					'tp-delay',
-					TextFormat::GREEN . (
-						$playerSettings["Teleport Delay"] > 0 ?
-							$playerSettings["Teleport Delay"] :
-							CustomKnownTranslationFactory::command_tpconfig_delay_off()
-					)
+					$playerSettings["Teleport Delay"] > 0 ?
+						TextFormat::GREEN . $playerSettings["Teleport Delay"] :
+						CustomKnownTranslationFactory::command_tpconfig_delay_off()->prefix(TextFormat::RED)
 				)->prefix(TextFormat::BLUE)
 			);
 			$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_delay_description()->prefix(TextFormat::YELLOW));
@@ -96,7 +101,7 @@ final class TpConfig extends Command implements PluginOwned{
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_novalue()->prefix(TextFormat::RED));
 					return;
 				}
-				if(!in_array($value, array_keys(Main::getLanguages()))){
+				if(!in_array($value, array_keys(Main::getLanguages()), true)){
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_language_invalid()->prefix(TextFormat::RED));
 					return;
 				}
@@ -126,7 +131,7 @@ final class TpConfig extends Command implements PluginOwned{
 					$sender->sendMessage(
 						CustomKnownTranslationFactory::command_tpconfig_success(
 							'Teleport Countdown',
-							$playerSettings["Teleport Countdown"] ? TextFormat::GREEN."true" : TextFormat::RED."false"
+							$playerSettings["Teleport Countdown"] ? TextFormat::GREEN . "true" : TextFormat::RED . "false"
 						)->prefix(TextFormat::GREEN)
 					);
 					break;
@@ -139,7 +144,7 @@ final class TpConfig extends Command implements PluginOwned{
 				$sender->sendMessage(
 					CustomKnownTranslationFactory::command_tpconfig_success(
 						'Teleport Countdown',
-						$value ? TextFormat::GREEN."true" : TextFormat::RED."false"
+						$value ? TextFormat::GREEN . "true" : TextFormat::RED . "false"
 					)->prefix(TextFormat::GREEN)
 				);
 				break;
@@ -149,7 +154,7 @@ final class TpConfig extends Command implements PluginOwned{
 					$sender->sendMessage(
 						CustomKnownTranslationFactory::command_tpconfig_success(
 							'Teleport alert',
-							$playerSettings["Alert Teleporting"] ? TextFormat::GREEN."true" : TextFormat::RED."false"
+							$playerSettings["Alert Teleporting"] ? TextFormat::GREEN . "true" : TextFormat::RED . "false"
 						)->prefix(TextFormat::GREEN)
 					);
 					break;
@@ -162,7 +167,7 @@ final class TpConfig extends Command implements PluginOwned{
 				$sender->sendMessage(
 					CustomKnownTranslationFactory::command_tpconfig_success(
 						'Teleport alert',
-						$value ? TextFormat::GREEN."true" : TextFormat::RED."false"
+						$value ? TextFormat::GREEN . "true" : TextFormat::RED . "false"
 					)->prefix(TextFormat::GREEN)
 				);
 				break;
@@ -172,7 +177,7 @@ final class TpConfig extends Command implements PluginOwned{
 					$sender->sendMessage(
 						CustomKnownTranslationFactory::command_tpconfig_success(
 							'Receiver alert',
-							$playerSettings["Alert Receiver"] ? TextFormat::GREEN."true" : TextFormat::RED."false"
+							$playerSettings["Alert Receiver"] ? TextFormat::GREEN . "true" : TextFormat::RED . "false"
 						)->prefix(TextFormat::GREEN)
 					);
 					break;
@@ -185,7 +190,7 @@ final class TpConfig extends Command implements PluginOwned{
 				$sender->sendMessage(
 					CustomKnownTranslationFactory::command_tpconfig_success(
 						'Receiver alert',
-						$value ? TextFormat::GREEN."true" : TextFormat::RED."false"
+						$value ? TextFormat::GREEN . "true" : TextFormat::RED . "false"
 					)->prefix(TextFormat::GREEN)
 				);
 				break;
