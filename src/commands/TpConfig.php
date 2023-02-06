@@ -105,7 +105,7 @@ final class TpConfig extends Command implements PluginOwned{
 					return;
 				}
 				$playerSettings["Language"] = mb_strtolower($input);
-				$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_success('Language', mb_strtolower($value))->prefix(TextFormat::GREEN));
+				$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_success('Language', mb_strtolower($input))->prefix(TextFormat::GREEN));
 				break;
 			case "tp-delay":
 				if($input === null){
@@ -119,10 +119,10 @@ final class TpConfig extends Command implements PluginOwned{
 				}
 				$playerSettings["Teleport Delay"] = (int) $value;
 				$sender->sendMessage(
-					CustomKnownTranslationFactory::command_tpconfig_success('Teleport Delay', $value)->format(
-						TextFormat::GREEN,
-						CustomKnownTranslationFactory::command_tpconfig_delay_seconds()->getText()
-					)
+					CustomKnownTranslationFactory::command_tpconfig_success(
+						'Teleport Delay',
+						CustomKnownTranslationFactory::teleport_state_seconds()->prefix($value . ' ')
+					)->prefix(TextFormat::GREEN)
 				);
 				break;
 			case "tp-countdown":
