@@ -32,7 +32,6 @@ final class CustomKnownTranslationKeys{
 	public const COMMAND_TPCONFIG_COUNTDOWN_DESCRIPTION = "command.tpconfig.countdown.description";
 	public const COMMAND_TPCONFIG_DELAY_DESCRIPTION = "command.tpconfig.delay.description";
 	public const COMMAND_TPCONFIG_DELAY_OFF = "command.tpconfig.delay.off";
-	public const COMMAND_TPCONFIG_DELAY_SECONDS = "command.tpconfig.delay.seconds";
 	public const COMMAND_TPCONFIG_DESCRIPTION = "command.tpconfig.description";
 	public const COMMAND_TPCONFIG_DISPLAY = "command.tpconfig.display";
 	public const COMMAND_TPCONFIG_HEADER = "command.tpconfig.header";
@@ -47,7 +46,14 @@ final class CustomKnownTranslationKeys{
 	public const COMMAND_TPDENY_NOPLAYER = "command.tpdeny.noplayer";
 	public const COMMAND_TPDENY_NOREQUEST = "command.tpdeny.norequest";
 	public const COMMAND_TPDENY_NOREQUESTPLAYER = "command.tpdeny.norequestplayer";
-	public const COMMAND_TPDENY_OFFLINE = "command.tpdeny.offline";
 	public const COMMAND_TPDENY_SUCCESS = "command.tpdeny.success";
 	public const COMMAND_TPDENY_USAGE = "command.tpdeny.usage";
+	public const TELEPORT_STATE_CANCELLED = "teleport.state.cancelled";
+	public const TELEPORT_STATE_FAILED = "teleport.state.failed";
+	public const TELEPORT_STATE_RCVOFFLINE = "teleport.state.rcvoffline";
+	public const TELEPORT_STATE_SECONDS = "teleport.state.seconds";
+	public const TELEPORT_STATE_SUCCESSFROM = "teleport.state.successfrom";
+	public const TELEPORT_STATE_SUCCESSTO = "teleport.state.successto";
+	public const TELEPORT_STATE_TIME = "teleport.state.time";
+	public const TELEPORT_STATE_TPINGOFFLINE = "teleport.state.tpingoffline";
 }

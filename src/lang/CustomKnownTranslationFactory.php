@@ -109,10 +109,6 @@ final class CustomKnownTranslationFactory{
 		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPCONFIG_DELAY_OFF, []);
 	}
 
-	public static function command_tpconfig_delay_seconds() : Translatable{
-		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPCONFIG_DELAY_SECONDS, []);
-	}
-
 	public static function command_tpconfig_description() : Translatable{
 		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPCONFIG_DESCRIPTION, []);
 	}
@@ -179,10 +175,6 @@ final class CustomKnownTranslationFactory{
 		]);
 	}
 
-	public static function command_tpdeny_offline() : Translatable{
-		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPDENY_OFFLINE, []);
-	}
-
 	public static function command_tpdeny_success(Translatable|string $param0) : Translatable{
 		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPDENY_SUCCESS, [
 			0 => $param0,
@@ -191,6 +183,46 @@ final class CustomKnownTranslationFactory{
 
 	public static function command_tpdeny_usage() : Translatable{
 		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPDENY_USAGE, []);
+	}
+
+	public static function teleport_state_cancelled() : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::TELEPORT_STATE_CANCELLED, []);
+	}
+
+	public static function teleport_state_failed(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::TELEPORT_STATE_FAILED, [
+			0 => $param0,
+		]);
+	}
+
+	public static function teleport_state_rcvoffline() : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::TELEPORT_STATE_RCVOFFLINE, []);
+	}
+
+	public static function teleport_state_seconds() : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::TELEPORT_STATE_SECONDS, []);
+	}
+
+	public static function teleport_state_successfrom(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::TELEPORT_STATE_SUCCESSFROM, [
+			0 => $param0,
+		]);
+	}
+
+	public static function teleport_state_successto(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::TELEPORT_STATE_SUCCESSTO, [
+			0 => $param0,
+		]);
+	}
+
+	public static function teleport_state_time(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::TELEPORT_STATE_TIME, [
+			0 => $param0,
+		]);
+	}
+
+	public static function teleport_state_tpingoffline() : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::TELEPORT_STATE_TPINGOFFLINE, []);
 	}
 
 }
