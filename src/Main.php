@@ -46,6 +46,9 @@ class Main extends PluginBase implements Listener{
 			new commands\TpaHereCommand($this),
 		]);
 
+		// register events
+		$this->getServer()->getPluginManager()->registerEvents($this, $this);
+
 		$this->saveResource('/lang/config.yml');
 		/** @var string[][] $contents */
 		$contents = yaml_parse_file(Path::join($this->getDataFolder(), "lang", 'config.yml'));
