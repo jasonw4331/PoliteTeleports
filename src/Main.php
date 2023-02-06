@@ -54,8 +54,9 @@ class Main extends PluginBase implements Listener{
 		$contents = yaml_parse_file(Path::join($this->getDataFolder(), "lang", 'config.yml'));
 		$languageAliases = [];
 		foreach($contents as $language => $aliases){
-			$this->saveResource('/lang/data/' . $language . '.ini');
-			$languageAliases[mb_strtolower($aliases['mini'])] = $language;
+			$mini = mb_strtolower($aliases['mini']);
+			$this->saveResource('/lang/data/' . $mini . '.ini');
+			$languageAliases[$mini] = $language;
 		}
 
 		$dir = scandir(Path::join($this->getDataFolder(), "lang", "data"));
