@@ -15,7 +15,6 @@ use function array_keys;
 use function array_shift;
 use function count;
 use function in_array;
-use function is_bool;
 use function mb_strtolower;
 
 final class TpConfig extends Command implements PluginOwned{
@@ -93,27 +92,28 @@ final class TpConfig extends Command implements PluginOwned{
 			return;
 		}
 		$option = array_shift($args);
-		$value = array_shift($args);
+		$input = array_shift($args);
 
 		switch($option){
 			case "language":
-				if($value === null){
+				if($input === null){
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_novalue()->prefix(TextFormat::RED));
 					return;
 				}
-				if(!in_array($value, array_keys(Main::getLanguages()), true)){
+				if(!in_array($input, array_keys(Main::getLanguages()), true)){
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_language_invalid()->prefix(TextFormat::RED));
 					return;
 				}
-				$playerSettings["Language"] = mb_strtolower($value);
+				$playerSettings["Language"] = mb_strtolower($input);
 				$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_success('Language', mb_strtolower($value))->prefix(TextFormat::GREEN));
 				break;
 			case "tp-delay":
-				if($value === null){
+				if($input === null){
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_novalue()->prefix(TextFormat::RED));
 					return;
 				}
-				if(!is_numeric($value)){
+				$value = filter_var($input, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
+				if($value === null){
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_intvalue()->prefix(TextFormat::RED));
 					return;
 				}
@@ -126,7 +126,7 @@ final class TpConfig extends Command implements PluginOwned{
 				);
 				break;
 			case "tp-countdown":
-				if($value === null){
+				if($input === null){
 					$playerSettings["Teleport Countdown"] = !$playerSettings["Teleport Countdown"];
 					$sender->sendMessage(
 						CustomKnownTranslationFactory::command_tpconfig_success(
@@ -136,7 +136,8 @@ final class TpConfig extends Command implements PluginOwned{
 					);
 					break;
 				}
-				if(!is_bool($value)){
+				$value = filter_var($input, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE);
+				if($value === null){
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_boolvalue()->prefix(TextFormat::RED));
 					return;
 				}
@@ -149,7 +150,7 @@ final class TpConfig extends Command implements PluginOwned{
 				);
 				break;
 			case "tp-alert":
-				if($value === null){
+				if($input === null){
 					$playerSettings["Alert Teleporting"] = !$playerSettings["Alert Teleporting"];
 					$sender->sendMessage(
 						CustomKnownTranslationFactory::command_tpconfig_success(
@@ -159,7 +160,8 @@ final class TpConfig extends Command implements PluginOwned{
 					);
 					break;
 				}
-				if(!is_bool($value)){
+				$value = filter_var($input, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE);
+				if($value === null){
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_boolvalue()->prefix(TextFormat::RED));
 					return;
 				}
@@ -172,7 +174,7 @@ final class TpConfig extends Command implements PluginOwned{
 				);
 				break;
 			case "rcv-alert":
-				if($value === null){
+				if($input === null){
 					$playerSettings["Alert Receiver"] = !$playerSettings["Alert Receiver"];
 					$sender->sendMessage(
 						CustomKnownTranslationFactory::command_tpconfig_success(
@@ -182,7 +184,8 @@ final class TpConfig extends Command implements PluginOwned{
 					);
 					break;
 				}
-				if(!is_bool($value)){
+				$value = filter_var($input, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE);
+				if($value === null){
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_boolvalue()->prefix(TextFormat::RED));
 					return;
 				}
