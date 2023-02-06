@@ -26,7 +26,7 @@ class Main extends PluginBase implements Listener{
 	private static array $languages = [];
 	/** @var TeleportRequest[][] $activeRequests */
 	private array $activeRequests = [];
-	/** @var array{
+	/** @phpstan-var array{
 	 * Language: string,
 	 * "Teleport Delay": int,
 	 * "Teleport Countdown": bool,
@@ -36,7 +36,7 @@ class Main extends PluginBase implements Listener{
 	 */
 	private static array $playerSettings = [];
 
-	public function onEnable() : void {
+	public function onEnable() : void{
 		// register commands
 		$this->getServer()->getCommandMap()->registerAll($this->getName(), [
 			new commands\TpAskCommand($this),
@@ -53,7 +53,7 @@ class Main extends PluginBase implements Listener{
 		/** @var string[][] $contents */
 		$contents = yaml_parse_file(Path::join($this->getDataFolder(), "lang", 'config.yml'));
 		$languageAliases = [];
-		foreach($contents as $language => $aliases) {
+		foreach($contents as $language => $aliases){
 			$this->saveResource('/lang/data/' . $language . '.ini');
 			$languageAliases[mb_strtolower($aliases['mini'])] = $language;
 		}
