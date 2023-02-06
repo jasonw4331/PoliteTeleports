@@ -12,6 +12,7 @@ Don't just show up, teleport politely! This plugin allows players to send and re
 
 * Allows sending teleport requests to players
 * Allows responding to teleport requests
+* Configurable translations
 
 # Permissions
 
@@ -25,7 +26,6 @@ Don't just show up, teleport politely! This plugin allows players to send and re
 
 * Cross-server teleport requests (transfer requests)
 * More configuration options
-* Translations
 
 # About
 
