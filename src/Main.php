@@ -61,7 +61,7 @@ class Main extends PluginBase implements Listener{
 			foreach ($dir as $file) {
 				/** @phpstan-var array{dirname: string, basename: string, extension?: string, filename: string} $fileData */
 				$fileData = pathinfo($file);
-				if (!isset($fileData["extension"]) || $fileData["extension"] !== "ini") {
+				if(!isset($fileData["extension"]) || $fileData["extension"] !== "ini"){
 					continue;
 				}
 				$languageName = mb_strtolower($fileData["filename"]);
@@ -71,8 +71,8 @@ class Main extends PluginBase implements Listener{
 					Language::FALLBACK_LANGUAGE
 				);
 				self::$languages[$languageName] = $language;
-				foreach ($languageAliases as $languageAlias => $alias) {
-					if (mb_strtolower($alias) === $languageName) {
+				foreach($languageAliases as $languageAlias => $alias){
+					if(mb_strtolower($alias) === $languageName){
 						self::$languages[mb_strtolower($languageAlias)] = $language;
 						unset($languageAliases[$languageAlias]);
 					}
@@ -99,10 +99,10 @@ class Main extends PluginBase implements Listener{
 
 		// garbage collection cleans cancelled requests every 5 minutes
 		$this->getScheduler()->scheduleRepeatingTask(new ClosureTask(\Closure::fromCallable(
-			function() {
-				foreach($this->activeRequests as $requester => $requests) {
-					foreach($requests as $key => $request) {
-						if($request->isCancelled()) {
+			function(){
+				foreach($this->activeRequests as $requester => $requests){
+					foreach($requests as $key => $request){
+						if($request->isCancelled()){
 							unset($this->activeRequests[$requester][$key]);
 						}
 					}
