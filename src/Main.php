@@ -113,13 +113,19 @@ class Main extends PluginBase implements Listener{
 		self::$playerSettings[$player->getName()] = $playerConfig->getAll();
 
 		// add translations to existing player language instance
-		$language = $player->getLanguage();
-		$refClass = new \ReflectionClass($language);
+		$languageA = $player->getLanguage();
+		$refClass = new \ReflectionClass($languageA);
 		$refProp = $refClass->getProperty('lang');
 		$refProp->setAccessible(true);
-		$lang = $refProp->getValue($language);
-		$lang = array_merge($lang, self::$languages[$playerConfig->get('Language', 'eng')]->getAll());
-		$refProp->setValue($language, $lang);
+		$langA = $refProp->getValue($languageA);
+
+		$languageB = self::$languages[$playerConfig->get('Language', 'eng')];
+		$refClass = new \ReflectionClass($languageB);
+		$refProp = $refClass->getProperty('lang');
+		$refProp->setAccessible(true);
+		$langB = $refProp->getValue($languageB);
+
+		$refProp->setValue($languageA, array_merge($langA, $langB));
 	}
 
 	public function onPlayerQuit(PlayerQuitEvent $event) : void {
