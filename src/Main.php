@@ -67,8 +67,7 @@ class Main extends PluginBase implements Listener{
 				$languageName = mb_strtolower($fileData["filename"]);
 				$language = new Language(
 					$languageName,
-					Path::join($this->getDataFolder(), "lang", "data"),
-					Language::FALLBACK_LANGUAGE
+					Path::join($this->getDataFolder(), "lang", "data")
 				);
 				self::$languages[$languageName] = $language;
 				foreach($languageAliases as $languageAlias => $alias){
