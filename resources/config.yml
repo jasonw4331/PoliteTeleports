@@ -2,7 +2,6 @@ Teleport Cooldown: 0 # seconds enforced between allowed teleports
 Retry Interval: 5 # seconds between retrying to teleport after failure
 
 Defaults:
-  Language: eng # available options: eng
   Teleport Delay: 5 # seconds to wait before teleporting
   Teleport Countdown: true
   Alert Teleporting: true

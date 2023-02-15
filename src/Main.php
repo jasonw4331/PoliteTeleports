@@ -12,10 +12,8 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\utils\Config;
 use Symfony\Component\Filesystem\Path;
-use function in_array;
 use function is_bool;
 use function is_int;
-use function is_string;
 use function mb_strtolower;
 use function pathinfo;
 use function scandir;
@@ -27,7 +25,6 @@ class Main extends PluginBase implements Listener{
 	/** @var TeleportRequest[][] $activeRequests */
 	private array $activeRequests = [];
 	/** @phpstan-var array{
-	 * Language: string,
 	 * "Teleport Delay": int,
 	 * "Teleport Countdown": bool,
 	 * "Alert Teleporting": bool,
@@ -83,6 +80,23 @@ class Main extends PluginBase implements Listener{
 			}
 		}
 
+		// add translations to existing server language instance
+		$languageA = $this->getServer()->getLanguage();
+		$refClass = new \ReflectionClass($languageA);
+		$refPropA = $refClass->getProperty('lang');
+		$refPropA->setAccessible(true);
+		/** @var string[] $langA */
+		$langA = $refPropA->getValue($languageA);
+
+		$languageB = self::$languages[$languageA->getLang()];
+		$refClass = new \ReflectionClass($languageB);
+		$refPropB = $refClass->getProperty('lang');
+		$refPropB->setAccessible(true);
+		/** @var string[] $langB */
+		$langB = $refPropB->getValue($languageB);
+
+		$refPropA->setValue($languageA, array_merge($langA, $langB));
+
 		// garbage collection cleans cancelled requests every 5 minutes
 		$this->getScheduler()->scheduleRepeatingTask(new ClosureTask(\Closure::fromCallable(
 			function() {
@@ -103,7 +117,6 @@ class Main extends PluginBase implements Listener{
 			Path::join($this->getDataFolder(), "players", $player->getName() . ".json"),
 			Config::JSON,
 			(array) $this->getConfig()->get("Defaults", [
-				"Language" => "eng",
 				"Teleport Delay" => 5,
 				"Teleport Countdown" => true,
 				"Alert Teleporting" => true,
@@ -111,21 +124,6 @@ class Main extends PluginBase implements Listener{
 			])
 		);
 		self::$playerSettings[$player->getName()] = $playerConfig->getAll();
-
-		// add translations to existing player language instance
-		$languageA = $player->getLanguage();
-		$refClass = new \ReflectionClass($languageA);
-		$refProp = $refClass->getProperty('lang');
-		$refProp->setAccessible(true);
-		$langA = $refProp->getValue($languageA);
-
-		$languageB = self::$languages[$playerConfig->get('Language', 'eng')];
-		$refClass = new \ReflectionClass($languageB);
-		$refProp = $refClass->getProperty('lang');
-		$refProp->setAccessible(true);
-		$langB = $refProp->getValue($languageB);
-
-		$refProp->setValue($languageA, array_merge($langA, $langB));
 	}
 
 	public function onPlayerQuit(PlayerQuitEvent $event) : void {
@@ -166,7 +164,6 @@ class Main extends PluginBase implements Listener{
 
 	/**
 	 * @phpstan-return array{
-	 * Language: string,
 	 * "Teleport Delay": int,
 	 * "Teleport Countdown": bool,
 	 * "Alert Teleporting": bool,
@@ -179,7 +176,6 @@ class Main extends PluginBase implements Listener{
 
 	/**
 	 * @phpstan-param array{
-	 * Language: string,
 	 * "Teleport Delay": int,
 	 * "Teleport Countdown": bool,
 	 * "Alert Teleporting": bool,
@@ -190,8 +186,6 @@ class Main extends PluginBase implements Listener{
 		// validate settings
 		if(!isset(self::$playerSettings[$playerName]))
 			throw new \InvalidArgumentException("Player $playerName does not exist");
-		if(!isset($settings["Language"]) || !is_string($settings["Language"]) || !in_array($settings["Language"], array_keys(self::$languages), true))
-			throw new \InvalidArgumentException("Language must be a string");
 		if(!isset($settings["Teleport Delay"]) || !is_int($settings["Teleport Delay"]))
 			throw new \InvalidArgumentException("Teleport Delay must be an integer");
 		if(!isset($settings["Teleport Countdown"]) || !is_bool($settings["Teleport Countdown"]))
