@@ -4,4 +4,14 @@ projects:
   PoliteTeleports:
     path: ""
     icon: "icon.png"
+    lint: false
+    excludeDirs:
+      - tests
+      - .github
+      - build
+      - phpstan
+    excludeFiles:
+      - .gitignore
+      - CONTRIBUTING.md
+      - SECURITY.md
 ...
