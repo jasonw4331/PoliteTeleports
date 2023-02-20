@@ -9,7 +9,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"jasonwynn10\\PoliteTeleports\\": "../src"
+			"jasonwynn10\\PoliteTeleports\\": "../../src"
 		}
 	},
 	"config": {
