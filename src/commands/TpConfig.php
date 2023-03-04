@@ -22,8 +22,8 @@ final class TpConfig extends Command implements PluginOwned{
 		__construct as private setOwningPlugin;
 	}
 
-	public function __construct(private Main $owningPlugin){
-		$this->setOwningPlugin($owningPlugin);
+	public function __construct(private Main $plugin){
+		$this->setOwningPlugin($plugin);
 		parent::__construct(
 			"tpconfig",
 			CustomKnownTranslationFactory::command_tpconfig_description(),
@@ -41,7 +41,7 @@ final class TpConfig extends Command implements PluginOwned{
 			return;
 		}
 
-		$playerSettings = $this->owningPlugin->getPlayerSettings($sender->getName());
+		$playerSettings = $this->plugin->getPlayerSettings($sender->getName());
 
 		if(count($args) < 1){
 			// print existing setting values
@@ -201,6 +201,6 @@ final class TpConfig extends Command implements PluginOwned{
 				$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_invalid()->prefix(TextFormat::RED));
 				return;
 		}
-		$this->owningPlugin->updatePlayerSettings($sender->getName(), $playerSettings);
+		$this->plugin->updatePlayerSettings($sender->getName(), $playerSettings);
 	}
 }

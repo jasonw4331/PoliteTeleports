@@ -13,12 +13,12 @@ use pocketmine\plugin\PluginOwnedTrait;
 use pocketmine\utils\TextFormat;
 
 class TpAskCommand extends Command implements PluginOwned{
-	use PluginOwnedTrait{
+	use PluginOwnedTrait {
 		__construct as setOwningPlugin;
 	}
 
-	public function __construct(private Main $owningPlugin) {
-		$this->setOwningPlugin($owningPlugin);
+	public function __construct(private Main $plugin){
+		$this->setOwningPlugin($plugin);
 		parent::__construct(
 			"tpask",
 			CustomKnownTranslationFactory::command_tpask_description(),
@@ -38,12 +38,12 @@ class TpAskCommand extends Command implements PluginOwned{
 		if(!isset($args[0])) {
 			throw new InvalidCommandSyntaxException;
 		}
-		$player = $this->owningPlugin->getServer()->getPlayerByPrefix($args[0]);
+		$player = $this->plugin->getServer()->getPlayerByPrefix($args[0]);
 		if($player === null) {
 			$sender->sendMessage(CustomKnownTranslationFactory::command_tpask_noplayer($args[0])->prefix(TextFormat::RED));
 			return;
 		}
-		$this->owningPlugin->addRequest($sender->getName(), $player->getName(), $sender->getName());
+		$this->plugin->addRequest($sender->getName(), $player->getName(), $sender->getName());
 		$sender->sendMessage(CustomKnownTranslationFactory::command_tpask_success($player->getName()));
 	}
 }
