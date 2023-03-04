@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace jasonwynn10\PoliteTeleports\commands;
@@ -11,6 +12,8 @@ use pocketmine\command\CommandSender;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\plugin\PluginOwnedTrait;
 use pocketmine\utils\TextFormat;
+use function array_pop;
+use function count;
 
 class TpDenyCommand extends Command implements PluginOwned{
 	use PluginOwnedTrait {
@@ -35,7 +38,7 @@ class TpDenyCommand extends Command implements PluginOwned{
 		if(!$this->testPermission($sender)){
 			return;
 		}
-		if(!isset($this->plugin->getActiveRequests()[$sender->getName()]) or count($this->plugin->getActiveRequests()[$sender->getName()]) === 0){
+		if(!isset($this->plugin->getActiveRequests()[$sender->getName()]) || count($this->plugin->getActiveRequests()[$sender->getName()]) === 0){
 			$sender->sendMessage(CustomKnownTranslationFactory::command_tpdeny_norequest());
 			return;
 		}
@@ -46,7 +49,7 @@ class TpDenyCommand extends Command implements PluginOwned{
 				return;
 			}
 			foreach($this->plugin->getActiveRequests()[$sender->getName()] as $request){
-				if($request->getFromTarget() === $target->getName() or $request->getToTarget() === $target->getName()){
+				if($request->getFromTarget() === $target->getName() || $request->getToTarget() === $target->getName()){
 					$request->cancel();
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpdeny_success($target->getName()));
 					return;

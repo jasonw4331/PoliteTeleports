@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace jasonwynn10\PoliteTeleports\commands;
@@ -11,6 +12,8 @@ use pocketmine\command\CommandSender;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\plugin\PluginOwnedTrait;
 use pocketmine\utils\TextFormat;
+use function array_key_last;
+use function count;
 
 class TpAcceptCommand extends Command implements PluginOwned{
 	use PluginOwnedTrait {
@@ -35,7 +38,7 @@ class TpAcceptCommand extends Command implements PluginOwned{
 		if(!$this->testPermission($sender)){
 			return;
 		}
-		if(!isset($this->plugin->getActiveRequests()[$sender->getName()]) or count($this->plugin->getActiveRequests()[$sender->getName()]) === 0){
+		if(!isset($this->plugin->getActiveRequests()[$sender->getName()]) || count($this->plugin->getActiveRequests()[$sender->getName()]) === 0){
 			$sender->sendMessage(CustomKnownTranslationFactory::command_tpaccept_norequest());
 			return;
 		}
@@ -46,10 +49,10 @@ class TpAcceptCommand extends Command implements PluginOwned{
 				return;
 			}
 			foreach($this->plugin->getActiveRequests()[$sender->getName()] as $request){
-				if($request->getFromTarget() === $target->getName() or $request->getToTarget() === $target->getName()){
+				if($request->getFromTarget() === $target->getName() || $request->getToTarget() === $target->getName()){
 					$fromTarget = $this->plugin->getServer()->getPlayerExact($request->getFromTarget());
 					$toTarget = $this->plugin->getServer()->getPlayerExact($request->getToTarget());
-					if($fromTarget === null or $toTarget === null){
+					if($fromTarget === null || $toTarget === null){
 						$sender->sendMessage(CustomKnownTranslationFactory::command_tpaccept_offline());
 						return;
 					}
@@ -65,7 +68,7 @@ class TpAcceptCommand extends Command implements PluginOwned{
 		$request = $requests[array_key_last($requests)];
 		$fromTarget = $this->plugin->getServer()->getPlayerExact($request->getFromTarget());
 		$toTarget = $this->plugin->getServer()->getPlayerExact($request->getToTarget());
-		if($fromTarget === null or $toTarget === null){
+		if($fromTarget === null || $toTarget === null){
 			$sender->sendMessage(CustomKnownTranslationFactory::command_tpaccept_offline());
 			return;
 		}

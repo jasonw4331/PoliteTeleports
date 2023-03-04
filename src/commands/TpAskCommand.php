@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace jasonwynn10\PoliteTeleports\commands;
@@ -32,14 +33,14 @@ class TpAskCommand extends Command implements PluginOwned{
 	 * @inheritDoc
 	 */
 	public function execute(CommandSender $sender, string $commandLabel, array $args){
-		if(!$this->testPermission($sender)) {
+		if(!$this->testPermission($sender)){
 			return;
 		}
-		if(!isset($args[0])) {
-			throw new InvalidCommandSyntaxException;
+		if(!isset($args[0])){
+			throw new InvalidCommandSyntaxException();
 		}
 		$player = $this->plugin->getServer()->getPlayerByPrefix($args[0]);
-		if($player === null) {
+		if($player === null){
 			$sender->sendMessage(CustomKnownTranslationFactory::command_tpask_noplayer($args[0])->prefix(TextFormat::RED));
 			return;
 		}

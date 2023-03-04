@@ -11,7 +11,8 @@ final class TeleportRequest{
 		private string $fromTarget,
 		private string $toTarget,
 		private string $requester
-	) {}
+	){
+	}
 
 	public function getFromTarget() : string{
 		return $this->fromTarget;

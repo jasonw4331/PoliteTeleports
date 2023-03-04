@@ -12,6 +12,7 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\utils\Config;
 use Symfony\Component\Filesystem\Path;
+use function array_merge;
 use function is_bool;
 use function is_int;
 use function mb_strtolower;
@@ -57,8 +58,8 @@ class Main extends PluginBase implements Listener{
 		}
 
 		$dir = scandir(Path::join($this->getDataFolder(), "lang", "data"));
-		if ($dir !== false) {
-			foreach ($dir as $file) {
+		if($dir !== false){
+			foreach($dir as $file){
 				/** @phpstan-var array{dirname: string, basename: string, extension?: string, filename: string} $fileData */
 				$fileData = pathinfo($file);
 				if(!isset($fileData["extension"]) || $fileData["extension"] !== "ini"){
@@ -110,7 +111,7 @@ class Main extends PluginBase implements Listener{
 		)), 20 * 60 * 5);
 	}
 
-	public function onPlayerJoin(PlayerJoinEvent $event) : void {
+	public function onPlayerJoin(PlayerJoinEvent $event) : void{
 		$player = $event->getPlayer();
 		$playerConfig = new Config(
 			Path::join($this->getDataFolder(), "players", $player->getName() . ".json"),
@@ -125,12 +126,12 @@ class Main extends PluginBase implements Listener{
 		self::$playerSettings[$player->getName()] = $playerConfig->getAll();
 	}
 
-	public function onPlayerQuit(PlayerQuitEvent $event) : void {
+	public function onPlayerQuit(PlayerQuitEvent $event) : void{
 		$player = $event->getPlayer();
 		unset(self::$playerSettings[$player->getName()]);
 
 		// cancel all teleport requests
-		foreach($this->activeRequests[$player->getName()] as $request) {
+		foreach($this->activeRequests[$player->getName()] as $request){
 			$request->cancel();
 		}
 	}
@@ -142,7 +143,7 @@ class Main extends PluginBase implements Listener{
 		return self::$languages;
 	}
 
-	public function addRequest(string $fromTarget, string $toTarget, string $requester) : void {
+	public function addRequest(string $fromTarget, string $toTarget, string $requester) : void{
 		$request = new TeleportRequest($fromTarget, $toTarget, $requester);
 
 		if(!isset($this->activeRequests[$fromTarget]))
@@ -157,7 +158,7 @@ class Main extends PluginBase implements Listener{
 	/**
 	 * @return TeleportRequest[][]
 	 */
-	public function getActiveRequests() : array {
+	public function getActiveRequests() : array{
 		return $this->activeRequests;
 	}
 
@@ -169,7 +170,7 @@ class Main extends PluginBase implements Listener{
 	 * "Alert Receiver": bool
 	 * }|null
 	 */
-	public static function getPlayerSettings(string $playerName) : ?array {
+	public static function getPlayerSettings(string $playerName) : ?array{
 		return self::$playerSettings[$playerName];
 	}
 
@@ -181,7 +182,7 @@ class Main extends PluginBase implements Listener{
 	 * "Alert Receiver": bool
 	 * } $settings
 	 */
-	public static function updatePlayerSettings(string $playerName, array $settings) : void {
+	public static function updatePlayerSettings(string $playerName, array $settings) : void{
 		// validate settings
 		if(!isset(self::$playerSettings[$playerName]))
 			throw new \InvalidArgumentException("Player $playerName does not exist");

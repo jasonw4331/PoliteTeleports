@@ -14,8 +14,12 @@ use pocketmine\utils\TextFormat;
 use function array_keys;
 use function array_shift;
 use function count;
+use function filter_var;
 use function in_array;
 use function mb_strtolower;
+use const FILTER_NULL_ON_FAILURE;
+use const FILTER_VALIDATE_BOOL;
+use const FILTER_VALIDATE_INT;
 
 final class TpConfig extends Command implements PluginOwned{
 	use PluginOwnedTrait {
