@@ -134,8 +134,10 @@ class Main extends PluginBase implements Listener{
 		unset(self::$playerSettings[$player->getName()]);
 
 		// cancel all teleport requests
-		foreach($this->activeRequests[$player->getName()] as $request){
-			$request->cancel();
+		if(isset($this->activeRequests[$player->getName()])){
+			foreach($this->activeRequests[$player->getName()] as $request){
+				$request->cancel();
+			}
 		}
 	}
 
