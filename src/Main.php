@@ -16,6 +16,7 @@ use function array_merge;
 use function is_bool;
 use function is_int;
 use function mb_strtolower;
+use function mkdir;
 use function pathinfo;
 use function scandir;
 use function yaml_parse_file;
@@ -96,6 +97,8 @@ class Main extends PluginBase implements Listener{
 		$langB = $refPropB->getValue($languageB);
 
 		$refPropA->setValue($languageA, array_merge($langA, $langB));
+
+		@mkdir(Path::join($this->getDataFolder(), "players"));
 
 		// garbage collection cleans cancelled requests every 5 minutes
 		$this->getScheduler()->scheduleRepeatingTask(new ClosureTask(\Closure::fromCallable(
