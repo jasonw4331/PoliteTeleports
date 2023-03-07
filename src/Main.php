@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace jasonwynn10\PoliteTeleports;
 
 use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\lang\Language;
 use pocketmine\plugin\PluginBase;
@@ -114,7 +114,7 @@ class Main extends PluginBase implements Listener{
 		)), 20 * 60 * 5);
 	}
 
-	public function onPlayerJoin(PlayerJoinEvent $event) : void{
+	public function onPlayerLogin(PlayerLoginEvent $event) : void{
 		$player = $event->getPlayer();
 		$playerConfig = new Config(
 			Path::join($this->getDataFolder(), "players", $player->getName() . ".json"),
@@ -131,6 +131,9 @@ class Main extends PluginBase implements Listener{
 
 	public function onPlayerQuit(PlayerQuitEvent $event) : void{
 		$player = $event->getPlayer();
+		if(!$player->spawned){ // prevent crash in case of login timeout
+			return;
+		}
 		unset(self::$playerSettings[$player->getName()]);
 
 		// cancel all teleport requests
