@@ -81,6 +81,12 @@ final class CustomKnownTranslationFactory{
 		]);
 	}
 
+	public static function command_tpask_successfrom(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPASK_SUCCESSFROM, [
+			0 => $param0,
+		]);
+	}
+
 	public static function command_tpask_usage() : Translatable{
 		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPASK_USAGE, []);
 	}

@@ -25,6 +25,7 @@ final class CustomKnownTranslationKeys{
 	public const COMMAND_TPASK_DESCRIPTION = "command.tpask.description";
 	public const COMMAND_TPASK_NOPLAYER = "command.tpask.noplayer";
 	public const COMMAND_TPASK_SUCCESS = "command.tpask.success";
+	public const COMMAND_TPASK_SUCCESSFROM = "command.tpask.successfrom";
 	public const COMMAND_TPASK_USAGE = "command.tpask.usage";
 	public const COMMAND_TPCONFIG_ALERT_RCV_DESCRIPTION = "command.tpconfig.alert.rcv.description";
 	public const COMMAND_TPCONFIG_ALERT_TP_DESCRIPTION = "command.tpconfig.alert.tp.description";
