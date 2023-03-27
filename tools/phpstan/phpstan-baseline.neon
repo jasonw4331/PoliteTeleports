@@ -1,18 +1,13 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Call to function is_bool\\(\\) with bool will always evaluate to true\\.$#"
-			count: 3
-			path: ../../src/Main.php
-
-		-
-			message: "#^Call to function is_int\\(\\) with int will always evaluate to true\\.$#"
-			count: 1
-			path: ../../src/Main.php
-
-		-
 			message: "#^Method jasonwynn10\\\\PoliteTeleports\\\\Main\\:\\:getPlayerSettings\\(\\) should return array\\{Teleport Delay\\: int, Teleport Countdown\\: bool, Alert Teleporting\\: bool, Alert Receiver\\: bool\\}\\|null but returns bool\\|int\\.$#"
 			count: 1
+			path: ../../src/Main.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 4
 			path: ../../src/Main.php
 
 		-
@@ -97,12 +92,12 @@ parameters:
 
 		-
 			message: "#^Offset 'Alert Receiver' does not exist on array\\{Teleport Delay\\: int, Teleport Countdown\\: bool, Alert Teleporting\\: bool, Alert Receiver\\: bool\\}\\|null\\.$#"
-			count: 2
+			count: 1
 			path: ../../src/commands/TpConfig.php
 
 		-
 			message: "#^Offset 'Alert Teleporting' does not exist on array\\{Teleport Delay\\: int, Teleport Countdown\\: bool, Alert Teleporting\\: bool, Alert Receiver\\: bool\\}\\|null\\.$#"
-			count: 2
+			count: 1
 			path: ../../src/commands/TpConfig.php
 
 		-
@@ -112,16 +107,16 @@ parameters:
 
 		-
 			message: "#^Offset 'Teleport Countdown' does not exist on array\\{Teleport Delay\\: int, Teleport Countdown\\: bool, Alert Teleporting\\: bool, Alert Receiver\\: bool\\}\\|null\\.$#"
-			count: 2
+			count: 1
 			path: ../../src/commands/TpConfig.php
 
 		-
 			message: "#^Offset 'Teleport Delay' does not exist on array\\{Teleport Delay\\: int, Teleport Countdown\\: bool, Alert Teleporting\\: bool, Alert Receiver\\: bool\\}\\|null\\.$#"
-			count: 2
+			count: 1
 			path: ../../src/commands/TpConfig.php
 
 		-
-			message: "#^Parameter \\#2 \\$settings of method jasonwynn10\\\\PoliteTeleports\\\\Main\\:\\:updatePlayerSettings\\(\\) expects array\\{Teleport Delay\\: int, Teleport Countdown\\: bool, Alert Teleporting\\: bool, Alert Receiver\\: bool\\}, array\\{Teleport Delay\\?\\: int, Teleport Countdown\\?\\: bool, Alert Teleporting\\?\\: bool, Alert Receiver\\?\\: bool, Language\\?\\: string\\} given\\.$#"
+			message: "#^Parameter \\#2 \\$settings of method jasonwynn10\\\\PoliteTeleports\\\\Main\\:\\:updatePlayerSettings\\(\\) expects array\\{Teleport Delay\\: int, Teleport Countdown\\: bool, Alert Teleporting\\: bool, Alert Receiver\\: bool\\}, array\\{Alert Receiver\\: bool\\}\\|array\\{Alert Teleporting\\: bool\\}\\|array\\{Language\\: string\\}\\|array\\{Teleport Countdown\\: bool\\}\\|array\\{Teleport Delay\\: int, Teleport Countdown\\: bool, Alert Teleporting\\: bool, Alert Receiver\\: bool, Language\\?\\: string\\}\\|array\\{Teleport Delay\\: int\\} given\\.$#"
 			count: 1
 			path: ../../src/commands/TpConfig.php
 
@@ -159,4 +154,3 @@ parameters:
 			message: "#^Parameter \\#1 \\$source of static method pocketmine\\\\command\\\\Command\\:\\:broadcastCommandMessage\\(\\) expects pocketmine\\\\command\\\\CommandSender, pocketmine\\\\player\\\\Player\\|null given\\.$#"
 			count: 1
 			path: ../../src/task/HandleTeleportTask.php
-
