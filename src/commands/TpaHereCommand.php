@@ -30,7 +30,7 @@ class TpaHereCommand extends Command implements PluginOwned{
 		$this->setPermission('PoliteTeleports.command.tpahere');
 	}
 
-	public function execute(CommandSender $sender, string $commandLabel, array $args) : void {
+	public function execute(CommandSender $sender, string $commandLabel, array $args) : void{
 		if(!$this->testPermission($sender)){
 			return;
 		}

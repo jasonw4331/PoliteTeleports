@@ -32,7 +32,7 @@ class TpAcceptCommand extends Command implements PluginOwned{
 		$this->setPermission('PoliteTeleports.command.tpaccept');
 	}
 
-	public function execute(CommandSender $sender, string $commandLabel, array $args) :void {
+	public function execute(CommandSender $sender, string $commandLabel, array $args) : void{
 		if(!$this->testPermission($sender)){
 			return;
 		}

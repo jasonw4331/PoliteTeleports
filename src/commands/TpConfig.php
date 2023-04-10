@@ -40,7 +40,7 @@ final class TpConfig extends Command implements PluginOwned{
 	/**
 	 * @inheritDoc
 	 */
-	public function execute(CommandSender $sender, string $commandLabel, array $args){
+	public function execute(CommandSender $sender, string $commandLabel, array $args) : void{
 		if(!$this->testPermission($sender)){
 			return;
 		}
@@ -166,7 +166,7 @@ final class TpConfig extends Command implements PluginOwned{
 				if($value === null){
 					$sender->sendMessage(
 						$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_boolvalue()->prefix(TextFormat::RED))
-						);
+					);
 					return;
 				}
 				$playerSettings["Teleport Countdown"] = (bool) $value;
