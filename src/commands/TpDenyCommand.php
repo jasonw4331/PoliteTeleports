@@ -9,6 +9,7 @@ use jasonwynn10\PoliteTeleports\Main;
 use jasonwynn10\PoliteTeleports\TeleportRequest;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\lang\KnownTranslationFactory;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\plugin\PluginOwnedTrait;
 use pocketmine\utils\TextFormat;
@@ -44,9 +45,7 @@ class TpDenyCommand extends Command implements PluginOwned{
 		if(isset($args[0])){
 			$target = $this->plugin->getServer()->getPlayerByPrefix($args[0]);
 			if($target === null){
-				$sender->sendMessage(
-					$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpdeny_noplayer($args[0])->prefix(TextFormat::RED))
-				);
+				$sender->sendMessage(KnownTranslationFactory::commands_generic_player_notFound()->prefix(TextFormat::RED));
 				return;
 			}
 			foreach($this->plugin->getActiveRequests()[$sender->getName()] as $request){

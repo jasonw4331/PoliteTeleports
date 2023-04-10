@@ -9,6 +9,7 @@ use jasonwynn10\PoliteTeleports\Main;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
+use pocketmine\lang\KnownTranslationFactory;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\plugin\PluginOwnedTrait;
 use pocketmine\utils\TextFormat;
@@ -38,9 +39,7 @@ class TpaHereCommand extends Command implements PluginOwned{
 		}
 		$player = $this->plugin->getServer()->getPlayerByPrefix($args[0]);
 		if($player === null){
-			$sender->sendMessage(
-				$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpahere_noplayer($args[0])->prefix(TextFormat::RED))
-			);
+			$sender->sendMessage(KnownTranslationFactory::commands_generic_player_notFound()->prefix(TextFormat::RED));
 			return;
 		}
 		$this->plugin->addRequest($player->getName(), $sender->getName(), $sender->getName());
