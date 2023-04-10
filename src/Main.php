@@ -72,31 +72,31 @@ class Main extends PluginBase implements Listener{
 					Path::join($this->getDataFolder(), "lang", "data")
 				);
 				self::$languages[$languageName] = $language;
-				foreach($languageAliases as $languageAlias => $alias){
-					if(mb_strtolower($alias) === $languageName){
-						self::$languages[mb_strtolower($languageAlias)] = $language;
-						unset($languageAliases[$languageAlias]);
+				foreach($languageAliases as $mini => $full){
+					if(mb_strtolower($full) === $languageName){
+						self::$languages[mb_strtolower($mini)] = $language;
+						unset($languageAliases[$mini]);
 					}
 				}
 			}
 		}
 
 		// add translations to existing server language instance
-		$languageA = $this->getServer()->getLanguage();
-		$refClass = new \ReflectionClass($languageA);
+		$serverLanguage = $this->getServer()->getLanguage();
+		$refClass = new \ReflectionClass($serverLanguage);
 		$refPropA = $refClass->getProperty('lang');
 		$refPropA->setAccessible(true);
-		/** @var string[] $langA */
-		$langA = $refPropA->getValue($languageA);
+		/** @var string[] $serverLanguageList */
+		$serverLanguageList = $refPropA->getValue($serverLanguage);
 
-		$languageB = self::$languages[$languageA->getLang()];
-		$refClass = new \ReflectionClass($languageB);
+		$pluginLanguage = self::$languages[$serverLanguage->getLang()];
+		$refClass = new \ReflectionClass($pluginLanguage);
 		$refPropB = $refClass->getProperty('lang');
 		$refPropB->setAccessible(true);
-		/** @var string[] $langB */
-		$langB = $refPropB->getValue($languageB);
+		/** @var string[] $pluginLanguageList */
+		$pluginLanguageList = $refPropB->getValue($pluginLanguage);
 
-		$refPropA->setValue($languageA, array_merge($langA, $langB));
+		$refPropA->setValue($serverLanguage, array_merge($serverLanguageList, $pluginLanguageList));
 
 		@mkdir(Path::join($this->getDataFolder(), "players"));
 
