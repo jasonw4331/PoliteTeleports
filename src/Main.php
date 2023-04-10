@@ -48,13 +48,13 @@ class Main extends PluginBase implements Listener{
 		// register events
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
 
-		$this->saveResource('/lang/config.yml');
+		$this->saveResource('/lang/config.yml', true);
 		/** @var string[][] $contents */
 		$contents = yaml_parse_file(Path::join($this->getDataFolder(), "lang", 'config.yml'));
 		$languageAliases = [];
 		foreach($contents as $language => $aliases){
 			$mini = mb_strtolower($aliases['mini']);
-			$this->saveResource('/lang/data/' . $mini . '.ini');
+			$this->saveResource('/lang/data/' . $mini . '.ini', true);
 			$languageAliases[$mini] = $language;
 		}
 

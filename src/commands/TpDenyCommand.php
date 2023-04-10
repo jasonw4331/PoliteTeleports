@@ -26,41 +26,48 @@ class TpDenyCommand extends Command implements PluginOwned{
 			"tpdeny",
 			CustomKnownTranslationFactory::command_tpdeny_description(),
 			CustomKnownTranslationFactory::command_tpdeny_usage(),
-			["tpno", "tpdeny", "tpd", "tpcancel"]
+			["tpno", "tpd", "tpcancel"]
 		);
 		$this->setPermission('PoliteTeleports.command.tpdeny');
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-	public function execute(CommandSender $sender, string $commandLabel, array $args){
+	public function execute(CommandSender $sender, string $commandLabel, array $args) : void{
 		if(!$this->testPermission($sender)){
 			return;
 		}
 		if(!isset($this->plugin->getActiveRequests()[$sender->getName()]) || count($this->plugin->getActiveRequests()[$sender->getName()]) === 0){
-			$sender->sendMessage(CustomKnownTranslationFactory::command_tpdeny_norequest());
+			$sender->sendMessage(
+				$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpdeny_norequest())
+			);
 			return;
 		}
 		if(isset($args[0])){
 			$target = $this->plugin->getServer()->getPlayerByPrefix($args[0]);
 			if($target === null){
-				$sender->sendMessage(CustomKnownTranslationFactory::command_tpdeny_noplayer($args[0])->prefix(TextFormat::RED));
+				$sender->sendMessage(
+					$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpdeny_noplayer($args[0])->prefix(TextFormat::RED))
+				);
 				return;
 			}
 			foreach($this->plugin->getActiveRequests()[$sender->getName()] as $request){
 				if($request->getFromTarget() === $target->getName() || $request->getToTarget() === $target->getName()){
 					$request->cancel();
-					$sender->sendMessage(CustomKnownTranslationFactory::command_tpdeny_success($target->getName()));
+					$sender->sendMessage(
+						$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpdeny_success($target->getName()))
+					);
 					return;
 				}
 			}
-			$sender->sendMessage(CustomKnownTranslationFactory::command_tpdeny_norequestplayer($target->getName())->prefix(TextFormat::RED));
+			$sender->sendMessage(
+				$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpdeny_norequestplayer($target->getName())->prefix(TextFormat::RED))
+			);
 			return;
 		}
 		/** @var TeleportRequest $request */
 		$request = array_pop($this->plugin->getActiveRequests()[$sender->getName()]);
 		$request->cancel();
-		$sender->sendMessage(CustomKnownTranslationFactory::command_tpdeny_success($request->getRequester()));
+		$sender->sendMessage(
+			$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpdeny_success($request->getRequester()))
+		);
 	}
 }

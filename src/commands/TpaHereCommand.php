@@ -29,10 +29,7 @@ class TpaHereCommand extends Command implements PluginOwned{
 		$this->setPermission('PoliteTeleports.command.tpahere');
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-	public function execute(CommandSender $sender, string $commandLabel, array $args){
+	public function execute(CommandSender $sender, string $commandLabel, array $args) : void {
 		if(!$this->testPermission($sender)){
 			return;
 		}
@@ -41,10 +38,14 @@ class TpaHereCommand extends Command implements PluginOwned{
 		}
 		$player = $this->plugin->getServer()->getPlayerByPrefix($args[0]);
 		if($player === null){
-			$sender->sendMessage(CustomKnownTranslationFactory::command_tpahere_noplayer($args[0])->prefix(TextFormat::RED));
+			$sender->sendMessage(
+				$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpahere_noplayer($args[0])->prefix(TextFormat::RED))
+			);
 			return;
 		}
 		$this->plugin->addRequest($player->getName(), $sender->getName(), $sender->getName());
-		$sender->sendMessage(CustomKnownTranslationFactory::command_tpahere_success($player->getName()));
+		$sender->sendMessage(
+			$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpahere_success($player->getName()))
+		);
 	}
 }

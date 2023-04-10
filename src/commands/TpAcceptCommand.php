@@ -26,26 +26,28 @@ class TpAcceptCommand extends Command implements PluginOwned{
 			"tpaccept",
 			CustomKnownTranslationFactory::command_tpaccept_description(),
 			CustomKnownTranslationFactory::command_tpaccept_usage(),
-			["tpyes", "tpallow", "tpy"]
+			["tpyes", "tpallow", "tpy", 'tpac']
 		);
 		$this->setPermission('PoliteTeleports.command.tpaccept');
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-	public function execute(CommandSender $sender, string $commandLabel, array $args){
+	public function execute(CommandSender $sender, string $commandLabel, array $args) :void {
 		if(!$this->testPermission($sender)){
 			return;
 		}
+		$lang = $sender->getLanguage();
 		if(!isset($this->plugin->getActiveRequests()[$sender->getName()]) || count($this->plugin->getActiveRequests()[$sender->getName()]) === 0){
-			$sender->sendMessage(CustomKnownTranslationFactory::command_tpaccept_norequest());
+			$sender->sendMessage(
+				$lang->translate(CustomKnownTranslationFactory::command_tpaccept_norequest())
+			);
 			return;
 		}
 		if(isset($args[0])){
 			$target = $this->plugin->getServer()->getPlayerByPrefix($args[0]);
 			if($target === null){
-				$sender->sendMessage(CustomKnownTranslationFactory::command_tpaccept_noplayer($args[0])->prefix(TextFormat::RED));
+				$sender->sendMessage(
+					$lang->translate(CustomKnownTranslationFactory::command_tpaccept_noplayer($args[0])->prefix(TextFormat::RED))
+				);
 				return;
 			}
 			foreach($this->plugin->getActiveRequests()[$sender->getName()] as $request){
@@ -53,15 +55,21 @@ class TpAcceptCommand extends Command implements PluginOwned{
 					$fromTarget = $this->plugin->getServer()->getPlayerExact($request->getFromTarget());
 					$toTarget = $this->plugin->getServer()->getPlayerExact($request->getToTarget());
 					if($fromTarget === null || $toTarget === null){
-						$sender->sendMessage(CustomKnownTranslationFactory::command_tpaccept_offline());
+						$sender->sendMessage(
+							$lang->translate(CustomKnownTranslationFactory::command_tpaccept_offline())
+						);
 						return;
 					}
 					$this->plugin->getScheduler()->scheduleRepeatingTask(new HandleTeleportTask($request, Main::getPlayerSettings($request->getFromTarget())['Teleport Delay'] * 20), 20);
-					$sender->sendMessage(CustomKnownTranslationFactory::command_tpaccept_success());
+					$sender->sendMessage(
+						$lang->translate(CustomKnownTranslationFactory::command_tpaccept_success())
+					);
 					return;
 				}
 			}
-			$sender->sendMessage(CustomKnownTranslationFactory::command_tpaccept_norequestplayer($target->getName()));
+			$sender->sendMessage(
+				$lang->translate(CustomKnownTranslationFactory::command_tpaccept_norequestplayer($target->getName()))
+			);
 			return;
 		}
 		$requests = $this->plugin->getActiveRequests()[$sender->getName()];
@@ -69,10 +77,14 @@ class TpAcceptCommand extends Command implements PluginOwned{
 		$fromTarget = $this->plugin->getServer()->getPlayerExact($request->getFromTarget());
 		$toTarget = $this->plugin->getServer()->getPlayerExact($request->getToTarget());
 		if($fromTarget === null || $toTarget === null){
-			$sender->sendMessage(CustomKnownTranslationFactory::command_tpaccept_offline());
+			$sender->sendMessage(
+				$lang->translate(CustomKnownTranslationFactory::command_tpaccept_offline())
+			);
 			return;
 		}
 		$this->plugin->getScheduler()->scheduleRepeatingTask(new HandleTeleportTask($request, Main::getPlayerSettings($request->getFromTarget())['Teleport Delay'] * 20), 20);
-		$sender->sendMessage(CustomKnownTranslationFactory::command_tpaccept_success());
+		$sender->sendMessage(
+			$lang->translate(CustomKnownTranslationFactory::command_tpaccept_success())
+		);
 	}
 }

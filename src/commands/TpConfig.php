@@ -49,49 +49,61 @@ final class TpConfig extends Command implements PluginOwned{
 
 		if(count($args) < 1){
 			// print existing setting values
-			$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_header()->prefix(TextFormat::GREEN));
+			$sender->sendMessage(
+				$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_header()->prefix(TextFormat::GREEN))
+			);
 
 			$sender->sendMessage(
-				CustomKnownTranslationFactory::command_tpconfig_display(
+				$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_display(
 					'language',
 					TextFormat::GREEN . $playerSettings["Language"]
-				)->prefix(TextFormat::BLUE)
+				)->prefix(TextFormat::BLUE))
 			);
-			$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_language_description()->prefix(TextFormat::YELLOW));
+			$sender->sendMessage(
+				$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_language_description()->prefix(TextFormat::YELLOW))
+			);
 
 			$sender->sendMessage(
-				CustomKnownTranslationFactory::command_tpconfig_display(
+				$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_display(
 					'tp-delay',
 					$playerSettings["Teleport Delay"] > 0 ?
 						TextFormat::GREEN . $playerSettings["Teleport Delay"] :
 						CustomKnownTranslationFactory::command_tpconfig_delay_off()->prefix(TextFormat::RED)
-				)->prefix(TextFormat::BLUE)
+				)->prefix(TextFormat::BLUE))
 			);
-			$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_delay_description()->prefix(TextFormat::YELLOW));
+			$sender->sendMessage(
+				$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_delay_description()->prefix(TextFormat::YELLOW))
+			);
 
 			$sender->sendMessage(
-				CustomKnownTranslationFactory::command_tpconfig_display(
+				$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_display(
 					'tp-countdown',
 					TextFormat::GREEN . ($playerSettings["Teleport Countdown"] ? "true" : "false")
-				)->prefix(TextFormat::BLUE)
+				)->prefix(TextFormat::BLUE))
 			);
-			$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_countdown_description()->prefix(TextFormat::YELLOW));
+			$sender->sendMessage(
+				$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_countdown_description()->prefix(TextFormat::YELLOW))
+			);
 
 			$sender->sendMessage(
-				CustomKnownTranslationFactory::command_tpconfig_display(
+				$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_display(
 					'tp-alert',
 					TextFormat::GREEN . ($playerSettings["Alert Teleporting"] ? "true" : "false")
-				)->prefix(TextFormat::BLUE)
+				)->prefix(TextFormat::BLUE))
 			);
-			$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_alert_tp_description()->prefix(TextFormat::YELLOW));
+			$sender->sendMessage(
+				$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_alert_tp_description()->prefix(TextFormat::YELLOW))
+			);
 
 			$sender->sendMessage(
-				CustomKnownTranslationFactory::command_tpconfig_display(
+				$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_display(
 					'rcv-alert',
 					TextFormat::GREEN . ($playerSettings["Alert Receiver"] ? "true" : "false")
-				)->prefix(TextFormat::BLUE)
+				)->prefix(TextFormat::BLUE))
 			);
-			$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_alert_rcv_description()->prefix(TextFormat::YELLOW));
+			$sender->sendMessage(
+				$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_alert_rcv_description()->prefix(TextFormat::YELLOW))
+			);
 
 			return;
 		}
@@ -101,108 +113,126 @@ final class TpConfig extends Command implements PluginOwned{
 		switch($option){
 			case "language":
 				if($input === null){
-					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_novalue()->prefix(TextFormat::RED));
+					$sender->sendMessage(
+						$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_novalue()->prefix(TextFormat::RED))
+					);
 					return;
 				}
 				if(!in_array($input, array_keys(Main::getLanguages()), true)){
-					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_language_invalid()->prefix(TextFormat::RED));
+					$sender->sendMessage(
+						$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_language_invalid()->prefix(TextFormat::RED))
+					);
 					return;
 				}
 				$playerSettings["Language"] = mb_strtolower($input);
-				$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_success('Language', mb_strtolower($input))->prefix(TextFormat::GREEN));
+				$sender->sendMessage(
+					$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_success('Language', mb_strtolower($input))->prefix(TextFormat::GREEN))
+				);
 				break;
 			case "tp-delay":
 				if($input === null){
-					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_novalue()->prefix(TextFormat::RED));
+					$sender->sendMessage(
+						$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_novalue()->prefix(TextFormat::RED))
+					);
 					return;
 				}
 				$value = filter_var($input, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
 				if($value === null){
-					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_intvalue()->prefix(TextFormat::RED));
+					$sender->sendMessage(
+						$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_intvalue()->prefix(TextFormat::RED))
+					);
 					return;
 				}
 				$playerSettings["Teleport Delay"] = (int) $value;
 				$sender->sendMessage(
-					CustomKnownTranslationFactory::command_tpconfig_success(
+					$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_success(
 						'Teleport Delay',
 						CustomKnownTranslationFactory::teleport_state_seconds()->prefix($value . ' ')
-					)->prefix(TextFormat::GREEN)
+					)->prefix(TextFormat::GREEN))
 				);
 				break;
 			case "tp-countdown":
 				if($input === null){
 					$playerSettings["Teleport Countdown"] = !$playerSettings["Teleport Countdown"];
 					$sender->sendMessage(
-						CustomKnownTranslationFactory::command_tpconfig_success(
+						$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_success(
 							'Teleport Countdown',
 							$playerSettings["Teleport Countdown"] ? TextFormat::GREEN . "true" : TextFormat::RED . "false"
-						)->prefix(TextFormat::GREEN)
+						)->prefix(TextFormat::GREEN))
 					);
 					break;
 				}
 				$value = filter_var($input, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE);
 				if($value === null){
-					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_boolvalue()->prefix(TextFormat::RED));
+					$sender->sendMessage(
+						$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_boolvalue()->prefix(TextFormat::RED))
+						);
 					return;
 				}
 				$playerSettings["Teleport Countdown"] = (bool) $value;
 				$sender->sendMessage(
-					CustomKnownTranslationFactory::command_tpconfig_success(
+					$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_success(
 						'Teleport Countdown',
 						$value ? TextFormat::GREEN . "true" : TextFormat::RED . "false"
-					)->prefix(TextFormat::GREEN)
+					)->prefix(TextFormat::GREEN))
 				);
 				break;
 			case "tp-alert":
 				if($input === null){
 					$playerSettings["Alert Teleporting"] = !$playerSettings["Alert Teleporting"];
 					$sender->sendMessage(
-						CustomKnownTranslationFactory::command_tpconfig_success(
+						$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_success(
 							'Teleport alert',
 							$playerSettings["Alert Teleporting"] ? TextFormat::GREEN . "true" : TextFormat::RED . "false"
-						)->prefix(TextFormat::GREEN)
+						)->prefix(TextFormat::GREEN))
 					);
 					break;
 				}
 				$value = filter_var($input, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE);
 				if($value === null){
-					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_boolvalue()->prefix(TextFormat::RED));
+					$sender->sendMessage(
+						$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_boolvalue()->prefix(TextFormat::RED))
+					);
 					return;
 				}
 				$playerSettings["Alert Teleporting"] = (bool) $value;
 				$sender->sendMessage(
-					CustomKnownTranslationFactory::command_tpconfig_success(
+					$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_success(
 						'Teleport alert',
 						$value ? TextFormat::GREEN . "true" : TextFormat::RED . "false"
-					)->prefix(TextFormat::GREEN)
+					)->prefix(TextFormat::GREEN))
 				);
 				break;
 			case "rcv-alert":
 				if($input === null){
 					$playerSettings["Alert Receiver"] = !$playerSettings["Alert Receiver"];
 					$sender->sendMessage(
-						CustomKnownTranslationFactory::command_tpconfig_success(
+						$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_success(
 							'Receiver alert',
 							$playerSettings["Alert Receiver"] ? TextFormat::GREEN . "true" : TextFormat::RED . "false"
-						)->prefix(TextFormat::GREEN)
+						)->prefix(TextFormat::GREEN))
 					);
 					break;
 				}
 				$value = filter_var($input, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE);
 				if($value === null){
-					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_boolvalue()->prefix(TextFormat::RED));
+					$sender->sendMessage(
+						$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_boolvalue()->prefix(TextFormat::RED))
+					);
 					return;
 				}
 				$playerSettings["Alert Receiver"] = (bool) $value;
 				$sender->sendMessage(
-					CustomKnownTranslationFactory::command_tpconfig_success(
+					$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_success(
 						'Receiver alert',
 						$value ? TextFormat::GREEN . "true" : TextFormat::RED . "false"
-					)->prefix(TextFormat::GREEN)
+					)->prefix(TextFormat::GREEN))
 				);
 				break;
 			default:
-				$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_invalid()->prefix(TextFormat::RED));
+				$sender->sendMessage(
+					$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpconfig_invalid()->prefix(TextFormat::RED))
+				);
 				return;
 		}
 		$this->plugin->updatePlayerSettings($sender->getName(), $playerSettings);
