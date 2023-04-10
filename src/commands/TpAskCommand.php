@@ -48,7 +48,7 @@ class TpAskCommand extends Command implements PluginOwned{
 		$sender->sendMessage(
 			$sender->getLanguage()->translate(CustomKnownTranslationFactory::command_tpask_success($player->getName()))
 		);
-		$sender->sendMessage(
+		$player->sendMessage(
 			$player->getLanguage()->translate(CustomKnownTranslationFactory::command_tpask_successfrom($sender->getName()))
 		);
 	}
