@@ -29,37 +29,52 @@ class HandleTeleportTask extends Task{
 		$requester = $this->request->getRequester();
 		$fromTarget = $server->getPlayerExact($this->request->getFromTarget());
 		if($fromTarget === null){ // player offline
-			if(Main::getPlayerSettings($this->request->getToTarget())['Alert Receiver'])
-				$server->getPlayerExact($this->request->getToTarget())?->sendMessage(CustomKnownTranslationFactory::teleport_state_tpingoffline());
+			if(Main::getPlayerSettings($this->request->getToTarget())['Alert Receiver']){
+				$target = $server->getPlayerExact($this->request->getToTarget());
+				$target?->sendMessage(
+					$target->getLanguage()->translate(CustomKnownTranslationFactory::teleport_state_tpingoffline())
+				);
+			}
 			throw new CancelTaskException();
 		}
 		$toTarget = $server->getPlayerExact($this->request->getToTarget());
 		if($toTarget === null){ // player offline
-			if(Main::getPlayerSettings($this->request->getFromTarget())['Alert Receiver'])
-				$server->getPlayerExact($this->request->getFromTarget())?->sendMessage(CustomKnownTranslationFactory::teleport_state_rcvoffline());
+			if(Main::getPlayerSettings($this->request->getFromTarget())['Alert Receiver']){
+				$fromTarget->sendMessage(
+					$fromTarget->getLanguage()->translate(CustomKnownTranslationFactory::teleport_state_rcvoffline())
+				);
+			}
 			throw new CancelTaskException();
 		}
 
 		if($this->request->isCancelled()){ // player first approved tp then denied while waiting
 			if(Main::getPlayerSettings($fromTarget->getName())['Alert Teleporting'])
-				$fromTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_cancelled());
+				$fromTarget->sendMessage(
+					$fromTarget->getLanguage()->translate(CustomKnownTranslationFactory::teleport_state_cancelled())
+				);
 
 			if(Main::getPlayerSettings($toTarget->getName())['Alert Receiver'])
-				$toTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_cancelled());
+				$toTarget->sendMessage(
+					$fromTarget->getLanguage()->translate(CustomKnownTranslationFactory::teleport_state_cancelled())
+				);
 			throw new CancelTaskException();
 		}
 
 		$tickDiff = $this->finalTick - $server->getTick();
 		if($tickDiff >= 20 && Main::getPlayerSettings($fromTarget->getName())['Teleport Countdown']){
-			$fromTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_time(
-				CustomKnownTranslationFactory::teleport_state_seconds()->prefix(ceil($tickDiff / 20) . ' ')
+			$fromTarget->sendMessage($fromTarget->getLanguage()->translate(
+				CustomKnownTranslationFactory::teleport_state_time(
+					CustomKnownTranslationFactory::teleport_state_seconds()->prefix(ceil($tickDiff / 20) . ' ')
+				)
 			));
 			return;
 		}
 
 		if(!$fromTarget->teleport($toTarget->getLocation())){ // likely tp event cancelled by other plugin
 			if(Main::getPlayerSettings($fromTarget->getName())['Alert Teleporting'])
-				$fromTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_failed($toTarget->getName()));
+				$fromTarget->sendMessage(
+					$fromTarget->getLanguage()->translate(CustomKnownTranslationFactory::teleport_state_failed($toTarget->getName()))
+				);
 
 			$this->finalTick += $server->getPluginManager()->getPlugin('PoliteTeleports')->getConfig()->get('Retry Interval', 5) * 20; // retry teleport in configured seconds
 			return;
@@ -72,10 +87,14 @@ class HandleTeleportTask extends Task{
 		);
 
 		if(Main::getPlayerSettings($fromTarget->getName())['Alert Teleporting'])
-			$fromTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_successfrom($toTarget->getName()));
+			$fromTarget->sendMessage(
+				$fromTarget->getLanguage()->translate(CustomKnownTranslationFactory::teleport_state_successfrom($toTarget->getName()))
+			);
 
 		if(Main::getPlayerSettings($toTarget->getName())['Alert Receiver'])
-			$toTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_successto($fromTarget->getName()));
+			$toTarget->sendMessage(
+				$fromTarget->getLanguage()->translate(CustomKnownTranslationFactory::teleport_state_successto($fromTarget->getName()))
+			);
 
 		$this->request->cancel(); // request can now be removed from the queue
 
