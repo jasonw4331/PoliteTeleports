@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\PoliteTeleports;
+namespace jasonw4331\PoliteTeleports;
 
 final class TeleportRequest{
 	private bool $isCancelled = false;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\PoliteTeleports\lang;
+namespace jasonw4331\PoliteTeleports\lang;
 
 use pocketmine\lang\Translatable;
 
