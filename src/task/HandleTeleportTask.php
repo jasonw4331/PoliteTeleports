@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\PoliteTeleports\task;
+namespace jasonw4331\PoliteTeleports\task;
 
-use jasonwynn10\PoliteTeleports\lang\CustomKnownTranslationFactory;
-use jasonwynn10\PoliteTeleports\Main;
-use jasonwynn10\PoliteTeleports\TeleportRequest;
+use jasonw4331\PoliteTeleports\lang\CustomKnownTranslationFactory;
+use jasonw4331\PoliteTeleports\Main;
+use jasonw4331\PoliteTeleports\TeleportRequest;
 use pocketmine\command\Command;
 use pocketmine\lang\KnownTranslationFactory;
 use pocketmine\scheduler\CancelTaskException;
@@ -17,7 +17,7 @@ use function ceil;
 class HandleTeleportTask extends Task{
 	private int $finalTick;
 
-	public function __construct(private TeleportRequest &$request, int $delayTicks){
+	public function __construct(private TeleportRequest $request, int $delayTicks){
 		$this->finalTick = Server::getInstance()->getTick() + $delayTicks;
 	}
 

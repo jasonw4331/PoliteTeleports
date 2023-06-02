@@ -1,7 +1,7 @@
 # PoliteTeleports
 
 [![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/R7kdetE)
-[![Poggit-Ci](https://poggit.pmmp.io/ci.shield/jasonwynn10/PoliteTeleports/PoliteTeleports)](https://poggit.pmmp.io/ci/jasonwynn10/PoliteTeleports/PoliteTeleports)
+[![Poggit-Ci](https://poggit.pmmp.io/ci.shield/jasonw4331/PoliteTeleports/PoliteTeleports)](https://poggit.pmmp.io/ci/jasonw4331/PoliteTeleports/PoliteTeleports)
 [![Download count](https://poggit.pmmp.io/shield.dl.total/PoliteTeleports)](https://poggit.pmmp.io/p/PoliteTeleports)
 
 # Intro

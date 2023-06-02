@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\PoliteTeleports\commands;
+namespace jasonw4331\PoliteTeleports\commands;
 
-use jasonwynn10\PoliteTeleports\lang\CustomKnownTranslationFactory;
-use jasonwynn10\PoliteTeleports\Main;
+use jasonw4331\PoliteTeleports\lang\CustomKnownTranslationFactory;
+use jasonw4331\PoliteTeleports\Main;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
@@ -18,7 +18,7 @@ class TpAskCommand extends Command implements PluginOwned{
 		__construct as setOwningPlugin;
 	}
 
-	public function __construct(private Main $plugin){
+	public function __construct(private readonly Main $plugin){
 		$this->setOwningPlugin($plugin);
 		parent::__construct(
 			"tpask",
