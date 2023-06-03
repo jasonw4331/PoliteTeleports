@@ -186,15 +186,15 @@ class Main extends PluginBase implements Listener{
 	public static function updatePlayerSettings(string $playerName, array $settings) : void{
 		// validate settings
 		if(!isset(self::$playerSettings[$playerName]))
-			throw new \InvalidArgumentException("Player $playerName does not exist");
+			throw new InvalidArgumentException("Player $playerName does not exist");
 		if(!isset($settings["Teleport Delay"]) || !is_int($settings["Teleport Delay"]))
-			throw new \InvalidArgumentException("Teleport Delay must be an integer");
+			throw new InvalidArgumentException("Teleport Delay must be an integer");
 		if(!isset($settings["Teleport Countdown"]) || !is_bool($settings["Teleport Countdown"]))
-			throw new \InvalidArgumentException("Teleport Countdown must be a boolean");
+			throw new InvalidArgumentException("Teleport Countdown must be a boolean");
 		if(!isset($settings["Alert Teleporting"]) || !is_bool($settings["Alert Teleporting"]))
-			throw new \InvalidArgumentException("Alert Teleporting must be a boolean");
+			throw new InvalidArgumentException("Alert Teleporting must be a boolean");
 		if(!isset($settings["Alert Receiver"]) || !is_bool($settings["Alert Receiver"]))
-			throw new \InvalidArgumentException("Alert Receiver must be a boolean");
+			throw new InvalidArgumentException("Alert Receiver must be a boolean");
 
 		self::$playerSettings[$playerName] = $settings;
 	}
