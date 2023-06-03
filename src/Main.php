@@ -28,12 +28,12 @@ class Main extends PluginBase implements Listener{
 	private static array $languages = [];
 	/** @var TeleportRequest[][] $activeRequests */
 	private array $activeRequests = [];
-	/** @phpstan-var array{
+	/** @phpstan-var array<string, array{
 	 * "Teleport Delay": int,
 	 * "Teleport Countdown": bool,
 	 * "Alert Teleporting": bool,
 	 * "Alert Receiver": bool
-	 * } $playerSettings
+	 * }> $playerSettings
 	 */
 	private static array $playerSettings = [];
 
