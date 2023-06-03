@@ -2,11 +2,6 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-	'message' => '#^Method jasonw4331\\\\PoliteTeleports\\\\Main\\:\\:getPlayerSettings\\(\\) should return array\\{Teleport Delay\\: int, Teleport Countdown\\: bool, Alert Teleporting\\: bool, Alert Receiver\\: bool\\}\\|null but returns bool\\|int\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Main.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Negated boolean expression is always false\\.$#',
 	'count' => 4,
 	'path' => __DIR__ . '/src/Main.php',
@@ -37,17 +32,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Main.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Static property jasonw4331\\\\PoliteTeleports\\\\Main\\:\\:\\$playerSettings \\(array\\{Teleport Delay\\: int, Teleport Countdown\\: bool, Alert Teleporting\\: bool, Alert Receiver\\: bool\\}\\) does not accept default value of type array\\{\\}\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Main.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Static property jasonw4331\\\\PoliteTeleports\\\\Main\\:\\:\\$playerSettings \\(array\\{Teleport Delay\\: int, Teleport Countdown\\: bool, Alert Teleporting\\: bool, Alert Receiver\\: bool\\}\\) does not accept non\\-empty\\-array\\<string, array\\<int\\|string, mixed\\>\\|bool\\|int\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Main.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Static property jasonw4331\\\\PoliteTeleports\\\\Main\\:\\:\\$playerSettings \\(array\\{Teleport Delay\\: int, Teleport Countdown\\: bool, Alert Teleporting\\: bool, Alert Receiver\\: bool\\}\\) does not accept non\\-empty\\-array\\<string, array\\{Teleport Delay\\: int, Teleport Countdown\\: bool, Alert Teleporting\\: bool, Alert Receiver\\: bool\\}\\|bool\\|int\\>\\.$#',
+	'message' => '#^Static property jasonw4331\\\\PoliteTeleports\\\\Main\\:\\:\\$playerSettings \\(array\\<string, array\\{Teleport Delay\\: int, Teleport Countdown\\: bool, Alert Teleporting\\: bool, Alert Receiver\\: bool\\}\\>\\) does not accept non\\-empty\\-array\\<string, array\\<int\\|string, mixed\\>\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Main.php',
 ];
