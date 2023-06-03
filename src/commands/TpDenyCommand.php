@@ -49,7 +49,7 @@ class TpDenyCommand extends Command implements PluginOwned{
 				return;
 			}
 			foreach($this->plugin->getActiveRequests()[$sender->getName()] as $request){
-				if($request->getFromTarget() === $target->getName() || $request->getToTarget() === $target->getName()){
+				if($request->fromTarget === $target->getName() || $request->toTarget === $target->getName()){
 					$request->cancel();
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpdeny_success($target->getName()));
 					return;
@@ -61,6 +61,6 @@ class TpDenyCommand extends Command implements PluginOwned{
 		/** @var TeleportRequest $request */
 		$request = array_pop($this->plugin->getActiveRequests()[$sender->getName()]);
 		$request->cancel();
-		$sender->sendMessage(CustomKnownTranslationFactory::command_tpdeny_success($request->getRequester()));
+		$sender->sendMessage(CustomKnownTranslationFactory::command_tpdeny_success($request->requester));
 	}
 }

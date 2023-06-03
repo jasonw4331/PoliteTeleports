@@ -26,17 +26,17 @@ class HandleTeleportTask extends Task{
 	 */
 	public function onRun() : void{
 		$server = Server::getInstance();
-		$requester = $this->request->getRequester();
-		$fromTarget = $server->getPlayerExact($this->request->getFromTarget());
+		$requester = $this->request->requester;
+		$fromTarget = $server->getPlayerExact($this->request->fromTarget);
 		if($fromTarget === null){ // player offline
-			if(Main::getPlayerSettings($this->request->getToTarget())['Alert Receiver'])
-				$server->getPlayerExact($this->request->getToTarget())?->sendMessage(CustomKnownTranslationFactory::teleport_state_tpingoffline());
+			if(Main::getPlayerSettings($this->request->toTarget)['Alert Receiver'])
+				$server->getPlayerExact($this->request->toTarget)?->sendMessage(CustomKnownTranslationFactory::teleport_state_tpingoffline());
 			throw new CancelTaskException();
 		}
-		$toTarget = $server->getPlayerExact($this->request->getToTarget());
+		$toTarget = $server->getPlayerExact($this->request->toTarget);
 		if($toTarget === null){ // player offline
-			if(Main::getPlayerSettings($this->request->getFromTarget())['Alert Receiver'])
-				$server->getPlayerExact($this->request->getFromTarget())?->sendMessage(CustomKnownTranslationFactory::teleport_state_rcvoffline());
+			if(Main::getPlayerSettings($this->request->fromTarget)['Alert Receiver'])
+				$server->getPlayerExact($this->request->fromTarget)?->sendMessage(CustomKnownTranslationFactory::teleport_state_rcvoffline());
 			throw new CancelTaskException();
 		}
 

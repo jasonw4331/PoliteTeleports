@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace jasonw4331\PoliteTeleports;
 
+use InvalidArgumentException;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
@@ -11,6 +12,7 @@ use pocketmine\lang\Language;
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\utils\Config;
+use ReflectionClass;
 use Symfony\Component\Filesystem\Path;
 use function array_merge;
 use function is_bool;
@@ -83,35 +85,26 @@ class Main extends PluginBase implements Listener{
 
 		// add translations to existing server language instance
 		$languageA = $this->getServer()->getLanguage();
-		$refClass = new \ReflectionClass($languageA);
+		$refClass = new ReflectionClass($languageA::class);
 		$refPropA = $refClass->getProperty('lang');
-		$refPropA->setAccessible(true);
 		/** @var string[] $langA */
 		$langA = $refPropA->getValue($languageA);
-
-		$languageB = self::$languages[$languageA->getLang()];
-		$refClass = new \ReflectionClass($languageB);
-		$refPropB = $refClass->getProperty('lang');
-		$refPropB->setAccessible(true);
 		/** @var string[] $langB */
-		$langB = $refPropB->getValue($languageB);
-
+		$langB = $refClass->getProperty('lang')->getValue(self::$languages[$languageA->getLang()]);
 		$refPropA->setValue($languageA, array_merge($langA, $langB));
 
 		@mkdir(Path::join($this->getDataFolder(), "players"));
 
 		// garbage collection cleans cancelled requests every 5 minutes
-		$this->getScheduler()->scheduleRepeatingTask(new ClosureTask(\Closure::fromCallable(
-			function(){
-				foreach($this->activeRequests as $requester => $requests){
-					foreach($requests as $key => $request){
-						if($request->isCancelled()){
-							unset($this->activeRequests[$requester][$key]);
-						}
+		$this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function(){
+			foreach($this->activeRequests as $requester => $requests){
+				foreach($requests as $key => $request){
+					if($request->isCancelled()){
+						unset($this->activeRequests[$requester][$key]);
 					}
 				}
 			}
-		)), 20 * 60 * 5);
+		}), 20 * 60 * 5);
 	}
 
 	public function onPlayerLogin(PlayerLoginEvent $event) : void{

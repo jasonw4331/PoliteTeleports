@@ -49,14 +49,14 @@ class TpAcceptCommand extends Command implements PluginOwned{
 				return;
 			}
 			foreach($this->plugin->getActiveRequests()[$sender->getName()] as $request){
-				if($request->getFromTarget() === $target->getName() || $request->getToTarget() === $target->getName()){
-					$fromTarget = $this->plugin->getServer()->getPlayerExact($request->getFromTarget());
-					$toTarget = $this->plugin->getServer()->getPlayerExact($request->getToTarget());
+				if($request->fromTarget === $target->getName() || $request->toTarget === $target->getName()){
+					$fromTarget = $this->plugin->getServer()->getPlayerExact($request->fromTarget);
+					$toTarget = $this->plugin->getServer()->getPlayerExact($request->toTarget);
 					if($fromTarget === null || $toTarget === null){
 						$sender->sendMessage(CustomKnownTranslationFactory::command_tpaccept_offline());
 						return;
 					}
-					$this->plugin->getScheduler()->scheduleRepeatingTask(new HandleTeleportTask($request, Main::getPlayerSettings($request->getFromTarget())['Teleport Delay'] * 20), 20);
+					$this->plugin->getScheduler()->scheduleRepeatingTask(new HandleTeleportTask($request, Main::getPlayerSettings($request->fromTarget)['Teleport Delay'] * 20), 20);
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpaccept_success());
 					return;
 				}
@@ -66,13 +66,13 @@ class TpAcceptCommand extends Command implements PluginOwned{
 		}
 		$requests = $this->plugin->getActiveRequests()[$sender->getName()];
 		$request = $requests[array_key_last($requests)];
-		$fromTarget = $this->plugin->getServer()->getPlayerExact($request->getFromTarget());
-		$toTarget = $this->plugin->getServer()->getPlayerExact($request->getToTarget());
+		$fromTarget = $this->plugin->getServer()->getPlayerExact($request->fromTarget);
+		$toTarget = $this->plugin->getServer()->getPlayerExact($request->toTarget);
 		if($fromTarget === null || $toTarget === null){
 			$sender->sendMessage(CustomKnownTranslationFactory::command_tpaccept_offline());
 			return;
 		}
-		$this->plugin->getScheduler()->scheduleRepeatingTask(new HandleTeleportTask($request, Main::getPlayerSettings($request->getFromTarget())['Teleport Delay'] * 20), 20);
+		$this->plugin->getScheduler()->scheduleRepeatingTask(new HandleTeleportTask($request, Main::getPlayerSettings($request->fromTarget)['Teleport Delay'] * 20), 20);
 		$sender->sendMessage(CustomKnownTranslationFactory::command_tpaccept_success());
 	}
 }
