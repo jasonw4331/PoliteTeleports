@@ -171,9 +171,9 @@ class Main extends PluginBase implements Listener{
 	 * "Teleport Countdown": bool,
 	 * "Alert Teleporting": bool,
 	 * "Alert Receiver": bool
-	 * }|null
+	 * }
 	 */
-	public static function getPlayerSettings(string $playerName) : ?array{
+	public static function getPlayerSettings(string $playerName) : array{
 		return self::$playerSettings[$playerName];
 	}
 
