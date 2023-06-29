@@ -16,6 +16,7 @@ use function ceil;
 
 class HandleTeleportTask extends Task{
 	private int $finalTick;
+	private int $attempt = 0;
 
 	public function __construct(private TeleportRequest $request, int $delayTicks){
 		$this->finalTick = Server::getInstance()->getTick() + $delayTicks;
@@ -61,7 +62,19 @@ class HandleTeleportTask extends Task{
 			if(Main::getPlayerSettings($fromTarget->getName())['Alert Teleporting'])
 				$fromTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_failed($toTarget->getName()));
 
-			$this->finalTick += $server->getPluginManager()->getPlugin('PoliteTeleports')->getConfig()->get('Retry Interval', 5) * 20; // retry teleport in configured seconds
+			if($this->attempt === 2){ // 3 attempts to teleport
+				$fromTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_failedfinal());
+				throw new CancelTaskException();
+			}
+			$this->attempt++;
+
+			$retryInterval = $server->getPluginManager()->getPlugin('PoliteTeleports')->getConfig()->get('Retry Interval', -1);
+			if($retryInterval < 1) {
+				$this->attempt = 2; // prevent reuse of this task object
+				throw new CancelTaskException();
+			}
+
+			$this->finalTick += $retryInterval * 20; // retry teleport in configured seconds
 			return;
 		}
 

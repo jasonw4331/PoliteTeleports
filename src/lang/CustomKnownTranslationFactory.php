@@ -201,6 +201,10 @@ final class CustomKnownTranslationFactory{
 		]);
 	}
 
+	public static function teleport_state_failedfinal() : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::TELEPORT_STATE_FAILEDFINAL, []);
+	}
+
 	public static function teleport_state_rcvoffline() : Translatable{
 		return new Translatable(CustomKnownTranslationKeys::TELEPORT_STATE_RCVOFFLINE, []);
 	}

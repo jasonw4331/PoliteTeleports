@@ -1,5 +1,5 @@
 Teleport Cooldown: 0 # seconds enforced between allowed teleports
-Retry Interval: 5 # seconds between retrying to teleport after failure
+Retry Interval: -1 # seconds between retrying to teleport after failure (-1 = never retry)
 
 Defaults:
   Teleport Delay: 5 # seconds to wait before teleporting
