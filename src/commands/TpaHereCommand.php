@@ -32,7 +32,7 @@ class TpaHereCommand extends Command implements PluginOwned{
 	/**
 	 * @inheritDoc
 	 */
-	public function execute(CommandSender $sender, string $commandLabel, array $args){
+	public function execute(CommandSender $sender, string $commandLabel, array $args) : void{
 		if(!isset($args[0])){
 			throw new InvalidCommandSyntaxException();
 		}
