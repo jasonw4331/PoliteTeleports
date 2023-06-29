@@ -3,6 +3,6 @@ Retry Interval: -1 # seconds between retrying to teleport after failure (-1 = ne
 
 Defaults:
   Teleport Delay: 5 # seconds to wait before teleporting
-  Teleport Countdown: true
-  Alert Teleporting: true
-  Alert Receiver: true
+  Teleport Countdown: true # show an in-chat countdown to the player
+  Alert Teleporting: true # send a message to the player when they teleport
+  Alert Receiver: true # send a message to the target when a player teleports to them
