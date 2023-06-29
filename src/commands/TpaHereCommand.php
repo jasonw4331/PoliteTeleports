@@ -9,6 +9,7 @@ use jasonw4331\PoliteTeleports\Main;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
+use pocketmine\player\Player;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\plugin\PluginOwnedTrait;
 use pocketmine\utils\TextFormat;
@@ -33,7 +34,7 @@ class TpaHereCommand extends Command implements PluginOwned{
 	 * @inheritDoc
 	 */
 	public function execute(CommandSender $sender, string $commandLabel, array $args) : void{
-		if(!isset($args[0])){
+		if(!isset($args[0]) || !$sender instanceof Player){
 			throw new InvalidCommandSyntaxException();
 		}
 		$player = $this->plugin->getServer()->getPlayerByPrefix($args[0]);
