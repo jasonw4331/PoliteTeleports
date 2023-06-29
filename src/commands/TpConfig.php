@@ -113,7 +113,7 @@ final class TpConfig extends Command implements PluginOwned{
 					return;
 				}
 				$value = filter_var($input, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
-				if($value === null){
+				if($value === null || $value < $this->owningPlugin->getConfig()->getNested('Defaults.Teleport Delay', 5)){
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_intvalue()->prefix(TextFormat::RED));
 					return;
 				}
