@@ -35,9 +35,6 @@ class TpDenyCommand extends Command implements PluginOwned{
 	 * @inheritDoc
 	 */
 	public function execute(CommandSender $sender, string $commandLabel, array $args){
-		if(!$this->testPermission($sender)){
-			return;
-		}
 		if(!isset($this->plugin->getActiveRequests()[$sender->getName()]) || count($this->plugin->getActiveRequests()[$sender->getName()]) === 0){
 			$sender->sendMessage(CustomKnownTranslationFactory::command_tpdeny_norequest());
 			return;

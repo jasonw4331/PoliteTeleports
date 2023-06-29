@@ -41,10 +41,6 @@ final class TpConfig extends Command implements PluginOwned{
 	 * @inheritDoc
 	 */
 	public function execute(CommandSender $sender, string $commandLabel, array $args){
-		if(!$this->testPermission($sender)){
-			return;
-		}
-
 		$playerSettings = $this->plugin->getPlayerSettings($sender->getName());
 
 		if(count($args) < 1){
