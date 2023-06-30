@@ -44,5 +44,6 @@ class TpaHereCommand extends Command implements PluginOwned{
 		}
 		$this->plugin->addRequest($player->getName(), $sender->getName(), $sender->getName());
 		$sender->sendMessage(CustomKnownTranslationFactory::command_tpahere_success($player->getName()));
+		$player->sendMessage(CustomKnownTranslationFactory::command_tpahere_successfrom($sender->getName()));
 	}
 }
