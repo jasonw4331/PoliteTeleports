@@ -22,6 +22,7 @@ use function mb_strtolower;
 use const FILTER_NULL_ON_FAILURE;
 use const FILTER_VALIDATE_BOOL;
 use const FILTER_VALIDATE_INT;
+use const JSON_PRETTY_PRINT;
 
 final class TpConfig extends Command implements PluginOwned{
 	use PluginOwnedTrait {
