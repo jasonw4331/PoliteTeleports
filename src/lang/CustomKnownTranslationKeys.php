@@ -21,6 +21,7 @@ final class CustomKnownTranslationKeys{
 	public const COMMAND_TPAHERE_DESCRIPTION = "command.tpahere.description";
 	public const COMMAND_TPAHERE_NOPLAYER = "command.tpahere.noplayer";
 	public const COMMAND_TPAHERE_SUCCESS = "command.tpahere.success";
+	public const COMMAND_TPAHERE_SUCCESSFROM = "command.tpahere.successfrom";
 	public const COMMAND_TPAHERE_USAGE = "command.tpahere.usage";
 	public const COMMAND_TPASK_DESCRIPTION = "command.tpask.description";
 	public const COMMAND_TPASK_NOPLAYER = "command.tpask.noplayer";
