@@ -10,7 +10,9 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\plugin\PluginOwnedTrait;
+use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
+use Symfony\Component\Filesystem\Path;
 use function array_keys;
 use function array_shift;
 use function count;
@@ -267,6 +269,14 @@ final class TpConfig extends Command implements PluginOwned{
 				$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_invalid()->prefix(TextFormat::RED));
 				return;
 		}
-		Main::updatePlayerSettings($sender->getName(), $playerSettings);
+		try{
+			Main::updatePlayerSettings($sender->getName(), $playerSettings);
+		}catch(\InvalidArgumentException $e) {
+			$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_invalid()->prefix(TextFormat::RED));
+			return;
+		}
+		$playerConfig = new Config(Path::join($this->owningPlugin->getDataFolder(), "players", $sender->getName() . ".json"));
+		$playerConfig->setAll($playerSettings);
+		$playerConfig->disableJsonOption(JSON_PRETTY_PRINT)->save();
 	}
 }
