@@ -129,7 +129,13 @@ class Main extends PluginBase implements Listener{
 			Config::JSON,
 			(array) $this->getConfig()->get("Defaults", $defaults)
 		);
-		self::$playerSettings[$player->getName()] = array_merge($defaults, $playerConfig->getAll());
+		foreach(array_merge($defaults, $playerConfig->getAll()) as $key => $value) {
+			self::$playerSettings[$player->getName()][$key] = match($key) {
+				"Teleport Delay" => max($value, $defaults["Teleport Delay"]),
+				"Random Location Radius" => min($value, $defaults["Random Location Radius"]),
+				default => $value
+			};
+		}
 	}
 
 	public function onPlayerQuit(PlayerQuitEvent $event) : void{
