@@ -74,7 +74,7 @@ class Main extends PluginBase implements Listener{
 					Path::join($this->getDataFolder(), "lang", "data")
 				);
 				self::$languages[$languageName] = $language;
-				foreach($languageAliases as $languageAlias => $alias){
+				foreach($languageAliases as $languageAlias => $alias) {
 					if(mb_strtolower($alias) === $languageName){
 						self::$languages[mb_strtolower($languageAlias)] = $language;
 						unset($languageAliases[$languageAlias]);
