@@ -38,6 +38,9 @@ final class CustomKnownTranslationKeys{
 	public const COMMAND_TPCONFIG_HEADER = "command.tpconfig.header";
 	public const COMMAND_TPCONFIG_INTVALUE = "command.tpconfig.intvalue";
 	public const COMMAND_TPCONFIG_INVALID = "command.tpconfig.invalid";
+	public const COMMAND_TPCONFIG_INVALID_OUTOFRANGE = "command.tpconfig.invalid.outofrange";
+	public const COMMAND_TPCONFIG_INVALID_TOOLARGE = "command.tpconfig.invalid.toolarge";
+	public const COMMAND_TPCONFIG_INVALID_TOOSMALL = "command.tpconfig.invalid.toosmall";
 	public const COMMAND_TPCONFIG_LANGUAGE_DESCRIPTION = "command.tpconfig.language.description";
 	public const COMMAND_TPCONFIG_LANGUAGE_INVALID = "command.tpconfig.language.invalid";
 	public const COMMAND_TPCONFIG_NOVALUE = "command.tpconfig.novalue";

@@ -138,6 +138,21 @@ final class CustomKnownTranslationFactory{
 		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPCONFIG_INVALID, []);
 	}
 
+	public static function command_tpconfig_invalid_outofrange(Translatable|string $param0, Translatable|string $param1) : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPCONFIG_INVALID_OUTOFRANGE, [
+			0 => $param0,
+			1 => $param1,
+		]);
+	}
+
+	public static function command_tpconfig_invalid_toolarge() : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPCONFIG_INVALID_TOOLARGE, []);
+	}
+
+	public static function command_tpconfig_invalid_toosmall() : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPCONFIG_INVALID_TOOSMALL, []);
+	}
+
 	public static function command_tpconfig_language_description() : Translatable{
 		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPCONFIG_LANGUAGE_DESCRIPTION, []);
 	}
