@@ -44,6 +44,8 @@ final class CustomKnownTranslationKeys{
 	public const COMMAND_TPCONFIG_LANGUAGE_DESCRIPTION = "command.tpconfig.language.description";
 	public const COMMAND_TPCONFIG_LANGUAGE_INVALID = "command.tpconfig.language.invalid";
 	public const COMMAND_TPCONFIG_NOVALUE = "command.tpconfig.novalue";
+	public const COMMAND_TPCONFIG_RANDOM_RADIUS_DESCRIPTION = "command.tpconfig.random.radius.description";
+	public const COMMAND_TPCONFIG_RANDOM_SAFETY_DESCRIPTION = "command.tpconfig.random.safety.description";
 	public const COMMAND_TPCONFIG_SUCCESS = "command.tpconfig.success";
 	public const COMMAND_TPCONFIG_USAGE = "command.tpconfig.usage";
 	public const COMMAND_TPDENY_DESCRIPTION = "command.tpdeny.description";
@@ -52,6 +54,9 @@ final class CustomKnownTranslationKeys{
 	public const COMMAND_TPDENY_NOREQUESTPLAYER = "command.tpdeny.norequestplayer";
 	public const COMMAND_TPDENY_SUCCESS = "command.tpdeny.success";
 	public const COMMAND_TPDENY_USAGE = "command.tpdeny.usage";
+	public const COMMAND_TPRANDOM_DESCRIPTION = "command.tprandom.description";
+	public const COMMAND_TPRANDOM_SUCCESS = "command.tprandom.success";
+	public const COMMAND_TPRANDOM_USAGE = "command.tprandom.usage";
 	public const TELEPORT_STATE_CANCELLED = "teleport.state.cancelled";
 	public const TELEPORT_STATE_FAILED = "teleport.state.failed";
 	public const TELEPORT_STATE_FAILEDFINAL = "teleport.state.failedfinal";

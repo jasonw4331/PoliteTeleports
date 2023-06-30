@@ -89,6 +89,22 @@ final class TpConfig extends Command implements PluginOwned{
 			);
 			$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_alert_rcv_description()->prefix(TextFormat::YELLOW));
 
+			$sender->sendMessage(
+				CustomKnownTranslationFactory::command_tpconfig_display(
+					'rtp-radius',
+					TextFormat::GREEN . $playerSettings["Random Location Radius"]
+				)->prefix(TextFormat::BLUE)
+			);
+			$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_random_radius_description()->prefix(TextFormat::YELLOW));
+
+			$sender->sendMessage(
+				CustomKnownTranslationFactory::command_tpconfig_display(
+					'rtp-safety',
+					TextFormat::GREEN . ($playerSettings["Random Location Safety"] ? "true" : "false")
+				)->prefix(TextFormat::BLUE)
+			);
+			$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_random_safety_description()->prefix(TextFormat::YELLOW));
+
 			return;
 		}
 		$option = array_shift($args);
@@ -197,6 +213,52 @@ final class TpConfig extends Command implements PluginOwned{
 				$sender->sendMessage(
 					CustomKnownTranslationFactory::command_tpconfig_success(
 						'Receiver alert',
+						$value ? TextFormat::GREEN . "true" : TextFormat::RED . "false"
+					)->prefix(TextFormat::GREEN)
+				);
+				break;
+			case 'rtp-radius':
+				if($input === null){
+					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_novalue()->prefix(TextFormat::RED));
+					return;
+				}
+				$value = filter_var($input, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
+				if($value === null){
+					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_intvalue()->prefix(TextFormat::RED));
+					return;
+				}
+				if($value > $this->owningPlugin->getConfig()->getNested('Defaults.Random Location Radius', 10000)) {
+					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_invalid_toolarge()->prefix(TextFormat::RED));
+					return;
+				}
+				$playerSettings["Random Location Radius"] = (int) $value;
+				$sender->sendMessage(
+					CustomKnownTranslationFactory::command_tpconfig_success(
+						'Random Location Radius',
+						CustomKnownTranslationFactory::teleport_state_seconds()->prefix($value . ' ')
+					)->prefix(TextFormat::GREEN)
+				);
+				break;
+			case 'rtp-safety':
+				if($input === null){
+					$playerSettings["Random Location Safety"] = !$playerSettings["Random Location Safety"];
+					$sender->sendMessage(
+						CustomKnownTranslationFactory::command_tpconfig_success(
+							'Random Location Safety',
+							$playerSettings["Random Location Safety"] ? TextFormat::GREEN . "true" : TextFormat::RED . "false"
+						)->prefix(TextFormat::GREEN)
+					);
+					break;
+				}
+				$value = filter_var($input, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE);
+				if($value === null){
+					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_boolvalue()->prefix(TextFormat::RED));
+					return;
+				}
+				$playerSettings["Random Location Safety"] = (bool) $value;
+				$sender->sendMessage(
+					CustomKnownTranslationFactory::command_tpconfig_success(
+						'Random Location Safety',
 						$value ? TextFormat::GREEN . "true" : TextFormat::RED . "false"
 					)->prefix(TextFormat::GREEN)
 				);

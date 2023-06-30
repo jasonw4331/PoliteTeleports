@@ -165,6 +165,14 @@ final class CustomKnownTranslationFactory{
 		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPCONFIG_NOVALUE, []);
 	}
 
+	public static function command_tpconfig_random_radius_description() : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPCONFIG_RANDOM_RADIUS_DESCRIPTION, []);
+	}
+
+	public static function command_tpconfig_random_safety_description() : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPCONFIG_RANDOM_SAFETY_DESCRIPTION, []);
+	}
+
 	public static function command_tpconfig_success(Translatable|string $param0, Translatable|string $param1) : Translatable{
 		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPCONFIG_SUCCESS, [
 			0 => $param0,
@@ -204,6 +212,18 @@ final class CustomKnownTranslationFactory{
 
 	public static function command_tpdeny_usage() : Translatable{
 		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPDENY_USAGE, []);
+	}
+
+	public static function command_tprandom_description() : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPRANDOM_DESCRIPTION, []);
+	}
+
+	public static function command_tprandom_success() : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPRANDOM_SUCCESS, []);
+	}
+
+	public static function command_tprandom_usage() : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::COMMAND_TPRANDOM_USAGE, []);
 	}
 
 	public static function teleport_state_cancelled() : Translatable{

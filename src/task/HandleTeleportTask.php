@@ -13,7 +13,12 @@ use pocketmine\math\Vector3;
 use pocketmine\scheduler\CancelTaskException;
 use pocketmine\scheduler\Task;
 use pocketmine\Server;
+use pocketmine\world\format\Chunk;
+use pocketmine\world\Position;
+use function abs;
 use function ceil;
+use function min;
+use function mt_rand;
 
 class HandleTeleportTask extends Task{
 	private int $finalTick;
@@ -37,20 +42,45 @@ class HandleTeleportTask extends Task{
 				$server->getPlayerExact($this->request->toTarget)?->sendMessage(CustomKnownTranslationFactory::teleport_state_tpingoffline());
 			throw new CancelTaskException();
 		}
-		$toTarget = $server->getPlayerExact($this->request->toTarget);
-		if($toTarget === null){ // player offline
-			if(Main::getPlayerSettings($this->request->fromTarget)['Alert Receiver'])
-				$server->getPlayerExact($this->request->fromTarget)?->sendMessage(CustomKnownTranslationFactory::teleport_state_rcvoffline());
-			throw new CancelTaskException();
-		}
 
-		if($this->request->isCancelled()){ // player first approved tp then denied while waiting
-			if(Main::getPlayerSettings($fromTarget->getName())['Alert Teleporting'])
-				$fromTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_cancelled());
+		if($this->request->toTarget !== Main::RANDOM_KEYNAME) {
+			$toTarget = $server->getPlayerExact($this->request->toTarget);
+			if($toTarget === null){ // player offline
+				if(Main::getPlayerSettings($this->request->fromTarget)['Alert Receiver'])
+					$server->getPlayerExact($this->request->fromTarget)?->sendMessage(CustomKnownTranslationFactory::teleport_state_rcvoffline());
+				throw new CancelTaskException();
+			}
 
-			if(Main::getPlayerSettings($toTarget->getName())['Alert Receiver'])
-				$toTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_cancelled());
-			throw new CancelTaskException();
+			if($this->request->isCancelled()){ // player first approved tp then denied while waiting
+				if(Main::getPlayerSettings($fromTarget->getName())['Alert Teleporting'])
+					$fromTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_cancelled());
+
+				if(Main::getPlayerSettings($toTarget->getName())['Alert Receiver'])
+					$toTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_cancelled());
+				throw new CancelTaskException();
+			}
+		}else{
+			$radius = min(Main::getPlayerSettings($fromTarget->getName())['Random Location Radius'], 2 ** 21); // hard cap teleport distance at around 2 million blocks
+			/** @var array{int, int, int} $currentCoords */
+			$currentCoords = [];
+			for($i = 0; $i < 3; ++$i) {
+				$value = $currentCoords[$i] = mt_rand(-$radius, $radius);
+				if(abs($value) < Server::getInstance()->getAllowedViewDistance($fromTarget->getViewDistance()) * Chunk::EDGE_LENGTH) { // always teleport the player outside render distance
+					$i--;
+				}
+			}
+			$pos = $fromTarget->getWorld()->getSafeSpawn($fromTarget->getPosition()->add($currentCoords[0], abs($currentCoords[1]), $currentCoords[2]));
+			$toTarget = new class($pos) {
+				public function __construct(private readonly Position $location) {}
+
+				public function getLocation() : Position{
+					return $this->location;
+				}
+
+				public function getName() : string{
+					return "{$this->location->getFloorX()} {$this->location->getFloorY()} {$this->location->getFloorZ()}";
+				}
+			};
 		}
 
 		$this->standingAt ??= $fromTarget->getPosition()->asVector3();
@@ -69,10 +99,10 @@ class HandleTeleportTask extends Task{
 		}
 
 		if(!$fromTarget->teleport($toTarget->getLocation())){ // likely tp event cancelled by other plugin
-			if(Main::getPlayerSettings($fromTarget->getName())['Alert Teleporting'] && $this->request->destination === null)
+			if(Main::getPlayerSettings($fromTarget->getName())['Alert Teleporting'] && $this->request->toTarget !== Main::RANDOM_KEYNAME)
 				$fromTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_failed($toTarget->getName()));
 
-			if($this->attempt === 2){ // 3 attempts to teleport
+			if($this->attempt === 2 || $this->request->toTarget === Main::RANDOM_KEYNAME){ // 3 attempts to teleport
 				$fromTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_failedfinal());
 				throw new CancelTaskException();
 			}
@@ -97,7 +127,7 @@ class HandleTeleportTask extends Task{
 		if(Main::getPlayerSettings($fromTarget->getName())['Alert Teleporting'])
 			$fromTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_successfrom($toTarget->getName()));
 
-		if(Main::getPlayerSettings($toTarget->getName())['Alert Receiver'])
+		if(Main::getPlayerSettings($toTarget->getName())['Alert Receiver'] && $this->request->toTarget !== Main::RANDOM_KEYNAME)
 			$toTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_successto($fromTarget->getName()));
 
 		$this->request->cancel(); // request can now be removed from the queue

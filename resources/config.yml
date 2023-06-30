@@ -7,3 +7,5 @@ Defaults:
   Teleport Countdown: true # show an in-chat countdown to the player
   Alert Teleporting: true # send a message to the player when they teleport
   Alert Receiver: true # send a message to the target when a player teleports to them
+  Random Location Radius: 10000 # radius in blocks to randomly teleport players within
+  Random Location Safety: true # random teleport to safe locations only

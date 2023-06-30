@@ -22,3 +22,12 @@ permissions:
   PoliteTeleports.command.tpdeny:
     default: true
     description: "Allows the player to use /tpdeny"
+  PoliteTeleports.command.tprandom:
+    default: true
+    description: "Allows the player to use /tprandom"
+  PoliteTeleports.command.tprandom.biome:
+    default: true
+    description: "Allows the player to use /tprandom specifying biome"
+  PoliteTeleports.command.tprandom.radius:
+    default: true
+    description: "Allows the player to use /tprandom specifying radius"

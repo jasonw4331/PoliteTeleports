@@ -24,6 +24,9 @@ use function scandir;
 use function yaml_parse_file;
 
 class Main extends PluginBase implements Listener{
+
+	public CONST RANDOM_KEYNAME = "random";
+
 	/** @var array<string, Language> $languages */
 	private static array $languages = [];
 	/** @var TeleportRequest[][] $activeRequests */
@@ -32,7 +35,9 @@ class Main extends PluginBase implements Listener{
 	 * "Teleport Delay": int,
 	 * "Teleport Countdown": bool,
 	 * "Alert Teleporting": bool,
-	 * "Alert Receiver": bool
+	 * "Alert Receiver": bool,
+	 * "Random Location Radius": int,
+	 * "Random Location Safety": bool
 	 * }> $playerSettings
 	 */
 	private static array $playerSettings = [];
@@ -45,6 +50,7 @@ class Main extends PluginBase implements Listener{
 			new commands\TpConfig($this),
 			new commands\TpDenyCommand($this),
 			new commands\TpaHereCommand($this),
+			new commands\TpRandomCommand($this),
 		]);
 
 		// register events
@@ -114,7 +120,9 @@ class Main extends PluginBase implements Listener{
 			"Teleport Delay" => 5,
 			"Teleport Countdown" => true,
 			"Alert Teleporting" => true,
-			"Alert Receiver" => true
+			"Alert Receiver" => true,
+			"Random Location Radius" => 10000,
+			"Random Location Safety" => true
 		];
 		$playerConfig = new Config(
 			Path::join($this->getDataFolder(), "players", $player->getName() . ".json"),
@@ -171,7 +179,9 @@ class Main extends PluginBase implements Listener{
 	 * "Teleport Delay": int,
 	 * "Teleport Countdown": bool,
 	 * "Alert Teleporting": bool,
-	 * "Alert Receiver": bool
+	 * "Alert Receiver": bool,
+	 * "Random Location Radius": int,
+	 * "Random Location Safety": bool
 	 * }
 	 */
 	public static function getPlayerSettings(string $playerName) : array{
@@ -183,7 +193,9 @@ class Main extends PluginBase implements Listener{
 	 * "Teleport Delay": int,
 	 * "Teleport Countdown": bool,
 	 * "Alert Teleporting": bool,
-	 * "Alert Receiver": bool
+	 * "Alert Receiver": bool,
+	 * "Random Location Radius": int,
+	 * "Random Location Safety": bool
 	 * } $settings
 	 */
 	public static function updatePlayerSettings(string $playerName, array $settings) : void{
@@ -198,6 +210,10 @@ class Main extends PluginBase implements Listener{
 			throw new InvalidArgumentException("Alert Teleporting must be a boolean");
 		if(!isset($settings["Alert Receiver"]) || !is_bool($settings["Alert Receiver"]))
 			throw new InvalidArgumentException("Alert Receiver must be a boolean");
+		if(!isset($settings["Random Location Radius"]) || !is_int($settings["Random Location Radius"]))
+			throw new InvalidArgumentException("Random Location Radius must be an integer");
+		if(!isset($settings["Random Location Safety"]) || !is_bool($settings["Random Location Safety"]))
+			throw new InvalidArgumentException("Random Location Safety must be a boolean");
 
 		self::$playerSettings[$playerName] = $settings;
 	}
