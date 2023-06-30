@@ -6,12 +6,16 @@
 
 # Intro
 
-Don't just show up, teleport politely! This plugin allows players to send and reply to requests of players to teleport wherever they might be.
+Don't just show up, teleport politely! This plugin allows players to send and reply to teleport requests wherever they might be!
 
 # Features
 
-* Allows sending teleport requests to players
-* Allows responding to teleport requests
+* Send teleport requests to other players!
+* Respond to teleport requests when you feel like!
+* Teleport to random places!
+* You decide if players must stand still to teleport
+* You decide how long players must wait to teleport
+* You decide if random teleports must be safe
 * Configurable translations
 
 # Permissions
@@ -21,6 +25,7 @@ Don't just show up, teleport politely! This plugin allows players to send and re
 * `PoliteTeleports.command.tpahere` Allows the player to use /tpahere
 * `PoliteTeleports.command.tpconfig` Allows the player to use /tpconfig
 * `PoliteTeleports.command.tpdeny` Allows the player to use /tpdeny
+* `PoliteTeleports.command.tprandom` Allows the player to use /tprandom
 
 # Future Additions
 
