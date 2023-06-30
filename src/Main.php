@@ -136,6 +136,7 @@ class Main extends PluginBase implements Listener{
 			foreach($this->activeRequests[$player->getName()] as $request){
 				$request->cancel();
 			}
+			unset($this->activeRequests[$player->getName()]);
 		}
 	}
 
