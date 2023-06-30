@@ -62,7 +62,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/commands/TpConfig.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Call to an undefined method class@anonymous/task/HandleTeleportTask\\.php\\:70\\|pocketmine\\\\player\\\\Player\\:\\:sendMessage\\(\\)\\.$#',
+	'message' => '#^Call to an undefined method class@anonymous/task/HandleTeleportTask\\.php\\:73\\|pocketmine\\\\player\\\\Player\\:\\:sendMessage\\(\\)\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/task/HandleTeleportTask.php',
 ];
