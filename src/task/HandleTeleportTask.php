@@ -20,7 +20,7 @@ class HandleTeleportTask extends Task{
 	private ?Vector3 $standingAt;
 	private int $attempt = 0;
 
-	public function __construct(private TeleportRequest $request, int $delayTicks){
+	public function __construct(private readonly TeleportRequest $request, int $delayTicks){
 		$this->finalTick = Server::getInstance()->getTick() + $delayTicks;
 	}
 
