@@ -245,7 +245,7 @@ final class TpConfig extends Command implements PluginOwned{
 				$sender->sendMessage(
 					CustomKnownTranslationFactory::command_tpconfig_success(
 						'Random Location Radius',
-						CustomKnownTranslationFactory::teleport_state_seconds()->prefix($value . ' ')
+						CustomKnownTranslationFactory::teleport_state_radius()->prefix($value . ' ')
 					)->prefix(TextFormat::GREEN)
 				);
 				break;
