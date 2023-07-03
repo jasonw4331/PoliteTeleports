@@ -61,6 +61,7 @@ final class CustomKnownTranslationKeys{
 	public const TELEPORT_STATE_CANCELLED = "teleport.state.cancelled";
 	public const TELEPORT_STATE_FAILED = "teleport.state.failed";
 	public const TELEPORT_STATE_FAILEDFINAL = "teleport.state.failedfinal";
+	public const TELEPORT_STATE_RADIUS = "teleport.state.radius";
 	public const TELEPORT_STATE_RCVOFFLINE = "teleport.state.rcvoffline";
 	public const TELEPORT_STATE_SECONDS = "teleport.state.seconds";
 	public const TELEPORT_STATE_SUCCESSFROM = "teleport.state.successfrom";

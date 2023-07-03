@@ -1,3 +1,4 @@
+Language: null # Plugin-specific language. Available languages: null, eng
 Teleport Cooldown: 0 # seconds enforced between allowed teleports
 Retry Interval: -1 # seconds between retrying to teleport after failure (-1 = never retry)
 Stand Still: true # Deny player teleports if they walk away

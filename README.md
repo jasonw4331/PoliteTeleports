@@ -16,7 +16,7 @@ Don't just show up, teleport politely! This plugin allows players to send and re
 * You decide if players must stand still to teleport
 * You decide how long players must wait to teleport
 * You decide if random teleports must be safe
-* Configurable translations
+* Server or Config configurable translations
 
 # Permissions
 
@@ -24,11 +24,13 @@ Don't just show up, teleport politely! This plugin allows players to send and re
 * `PoliteTeleports.command.tpask` Allows the player to use /tpask
 * `PoliteTeleports.command.tpahere` Allows the player to use /tpahere
 * `PoliteTeleports.command.tpconfig` Allows the player to use /tpconfig
+* `PoliteTeleports.command.tpconfig.language` Allows the player to set /tpconfig language
 * `PoliteTeleports.command.tpdeny` Allows the player to use /tpdeny
 * `PoliteTeleports.command.tprandom` Allows the player to use /tprandom
 
 # Future Additions
 
+* Configurable player glow effect after teleport
 * Cross-server teleport requests (transfer requests)
 * More configuration options
 

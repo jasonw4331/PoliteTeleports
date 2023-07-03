@@ -90,16 +90,7 @@ class Main extends PluginBase implements Listener{
 				}
 			}
 		}
-
-		// add translations to existing server language instance
-		$languageA = $this->getServer()->getLanguage();
-		$refClass = new ReflectionClass($languageA::class);
-		$refPropA = $refClass->getProperty('lang');
-		/** @var string[] $langA */
-		$langA = $refPropA->getValue($languageA);
-		/** @var string[] $langB */
-		$langB = $refClass->getProperty('lang')->getValue(self::$languages[$languageA->getLang()]);
-		$refPropA->setValue($languageA, array_merge($langA, $langB));
+		$this->updateLanguage($this->getConfig()->get("Language", $this->getServer()->getLanguage()->getLang()));
 
 		@mkdir(Path::join($this->getDataFolder(), "players"));
 
@@ -161,6 +152,24 @@ class Main extends PluginBase implements Listener{
 	 */
 	public static function getLanguages() : array{
 		return self::$languages;
+	}
+
+	/**
+	 * @phpstan-param string $language accepts any known translation language name or alias
+	 */
+	public function updateLanguage(string $language) : void{
+		if(!isset(self::$languages[$language]))
+			return;
+
+		// add translations to existing server language instance
+		$languageA = $this->getServer()->getLanguage();
+		$refClass = new ReflectionClass($languageA::class);
+		$refPropA = $refClass->getProperty('lang');
+		/** @var string[] $langA */
+		$langA = $refPropA->getValue($languageA);
+		/** @var string[] $langB */
+		$langB = $refClass->getProperty('lang')->getValue(self::$languages[$language]);
+		$refPropA->setValue($languageA, array_merge($langA, $langB));
 	}
 
 	public function addRequest(string $fromTarget, string $toTarget, string $requester) : void{

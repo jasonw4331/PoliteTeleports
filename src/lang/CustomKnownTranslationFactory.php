@@ -246,6 +246,10 @@ final class CustomKnownTranslationFactory{
 		return new Translatable(CustomKnownTranslationKeys::TELEPORT_STATE_FAILEDFINAL, []);
 	}
 
+	public static function teleport_state_radius() : Translatable{
+		return new Translatable(CustomKnownTranslationKeys::TELEPORT_STATE_RADIUS, []);
+	}
+
 	public static function teleport_state_rcvoffline() : Translatable{
 		return new Translatable(CustomKnownTranslationKeys::TELEPORT_STATE_RCVOFFLINE, []);
 	}
