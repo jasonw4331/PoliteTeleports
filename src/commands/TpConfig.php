@@ -50,13 +50,15 @@ final class TpConfig extends Command implements PluginOwned{
 			// print existing setting values
 			$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_header()->prefix(TextFormat::GREEN));
 
-			$sender->sendMessage(
-				CustomKnownTranslationFactory::command_tpconfig_display(
-					'language',
-					TextFormat::GREEN . $playerSettings["Language"]
-				)->prefix(TextFormat::BLUE)
-			);
-			$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_language_description()->prefix(TextFormat::YELLOW));
+			if($this->testPermissionSilent($sender, "PoliteTeleports.command.tpconfig.language")) {
+				$sender->sendMessage(
+					CustomKnownTranslationFactory::command_tpconfig_display(
+						'language',
+						TextFormat::GREEN . $this->owningPlugin->getConfig()->get("Language", $this->owningPlugin->getServer()->getLanguage()->getLang())
+					)->prefix(TextFormat::BLUE)
+				);
+				$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_language_description()->prefix(TextFormat::YELLOW));
+			}
 
 			$sender->sendMessage(
 				CustomKnownTranslationFactory::command_tpconfig_display(
@@ -115,6 +117,9 @@ final class TpConfig extends Command implements PluginOwned{
 
 		switch($option){
 			case "language":
+				if(!$this->testPermission($sender, "PoliteTeleports.command.tpconfig.language")) {
+					return;
+				}
 				if($input === null){
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_novalue()->prefix(TextFormat::RED));
 					return;
@@ -123,7 +128,9 @@ final class TpConfig extends Command implements PluginOwned{
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_language_invalid()->prefix(TextFormat::RED));
 					return;
 				}
-				$playerSettings["Language"] = mb_strtolower($input);
+				$this->owningPlugin->getConfig()->set("Language", mb_strtolower($input));
+				$this->owningPlugin->updateLanguage(mb_strtolower($input));
+				//$this->owningPlugin->getConfig()->save(); // TODO: should this write to disk? comments get deleted
 				$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_success('Language', mb_strtolower($input))->prefix(TextFormat::GREEN));
 				break;
 			case "tp-delay":

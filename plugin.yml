@@ -19,6 +19,9 @@ permissions:
   PoliteTeleports.command.tpconfig:
     default: true
     description: "Allows the player to use /tpconfig"
+  PoliteTeleports.command.tpconfig.language:
+    default: op
+    description: "Allows the player to set /tpconfig language"
   PoliteTeleports.command.tpdeny:
     default: true
     description: "Allows the player to use /tpdeny"
