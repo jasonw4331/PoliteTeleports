@@ -29,7 +29,7 @@ final class TpConfig extends Command implements PluginOwned{
 		__construct as private setOwningPlugin;
 	}
 
-	public function __construct(Main $plugin) {
+	public function __construct(private readonly Main $plugin) {
 		$this->setOwningPlugin($plugin);
 		parent::__construct(
 			"tpconfig",
@@ -54,7 +54,7 @@ final class TpConfig extends Command implements PluginOwned{
 				$sender->sendMessage(
 					CustomKnownTranslationFactory::command_tpconfig_display(
 						'language',
-						TextFormat::GREEN . $this->owningPlugin->getConfig()->get("Language", $this->owningPlugin->getServer()->getLanguage()->getLang())
+						TextFormat::GREEN . $this->plugin->getConfig()->get("Language", $this->plugin->getServer()->getLanguage()->getLang())
 					)->prefix(TextFormat::BLUE)
 				);
 				$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_language_description()->prefix(TextFormat::YELLOW));
@@ -128,9 +128,9 @@ final class TpConfig extends Command implements PluginOwned{
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_language_invalid()->prefix(TextFormat::RED));
 					return;
 				}
-				$this->owningPlugin->getConfig()->set("Language", mb_strtolower($input));
-				$this->owningPlugin->updateLanguage(mb_strtolower($input));
-				//$this->owningPlugin->getConfig()->save(); // TODO: should this write to disk? comments get deleted
+				$this->plugin->getConfig()->set("Language", mb_strtolower($input));
+				$this->plugin->updateLanguage(mb_strtolower($input));
+				//$this->plugin->getConfig()->save(); // TODO: should this write to disk? comments get deleted
 				$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_success('Language', mb_strtolower($input))->prefix(TextFormat::GREEN));
 				break;
 			case "tp-delay":
@@ -143,11 +143,11 @@ final class TpConfig extends Command implements PluginOwned{
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_intvalue()->prefix(TextFormat::RED));
 					return;
 				}
-				if($value < $this->owningPlugin->getConfig()->getNested('Defaults.Teleport Delay', 5)) {
+				if($value < $this->plugin->getConfig()->getNested('Defaults.Teleport Delay', 5)) {
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_invalid_toosmall()->prefix(TextFormat::RED));
 					return;
 				}
-				$playerSettings["Teleport Delay"] = (int) $value;
+				$playerSettings["Teleport Delay"] = $value;
 				$sender->sendMessage(
 					CustomKnownTranslationFactory::command_tpconfig_success(
 						'Teleport Delay',
@@ -171,7 +171,7 @@ final class TpConfig extends Command implements PluginOwned{
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_boolvalue()->prefix(TextFormat::RED));
 					return;
 				}
-				$playerSettings["Teleport Countdown"] = (bool) $value;
+				$playerSettings["Teleport Countdown"] = $value;
 				$sender->sendMessage(
 					CustomKnownTranslationFactory::command_tpconfig_success(
 						'Teleport Countdown',
@@ -195,7 +195,7 @@ final class TpConfig extends Command implements PluginOwned{
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_boolvalue()->prefix(TextFormat::RED));
 					return;
 				}
-				$playerSettings["Alert Teleporting"] = (bool) $value;
+				$playerSettings["Alert Teleporting"] = $value;
 				$sender->sendMessage(
 					CustomKnownTranslationFactory::command_tpconfig_success(
 						'Teleport alert',
@@ -219,7 +219,7 @@ final class TpConfig extends Command implements PluginOwned{
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_boolvalue()->prefix(TextFormat::RED));
 					return;
 				}
-				$playerSettings["Alert Receiver"] = (bool) $value;
+				$playerSettings["Alert Receiver"] = $value;
 				$sender->sendMessage(
 					CustomKnownTranslationFactory::command_tpconfig_success(
 						'Receiver alert',
@@ -237,11 +237,11 @@ final class TpConfig extends Command implements PluginOwned{
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_intvalue()->prefix(TextFormat::RED));
 					return;
 				}
-				if($value > $this->owningPlugin->getConfig()->getNested('Defaults.Random Location Radius', 10000)) {
+				if($value > $this->plugin->getConfig()->getNested('Defaults.Random Location Radius', 10000)) {
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_invalid_toolarge()->prefix(TextFormat::RED));
 					return;
 				}
-				$playerSettings["Random Location Radius"] = (int) $value;
+				$playerSettings["Random Location Radius"] = $value;
 				$sender->sendMessage(
 					CustomKnownTranslationFactory::command_tpconfig_success(
 						'Random Location Radius',
@@ -265,7 +265,7 @@ final class TpConfig extends Command implements PluginOwned{
 					$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_boolvalue()->prefix(TextFormat::RED));
 					return;
 				}
-				$playerSettings["Random Location Safety"] = (bool) $value;
+				$playerSettings["Random Location Safety"] = $value;
 				$sender->sendMessage(
 					CustomKnownTranslationFactory::command_tpconfig_success(
 						'Random Location Safety',
@@ -283,7 +283,7 @@ final class TpConfig extends Command implements PluginOwned{
 			$sender->sendMessage(CustomKnownTranslationFactory::command_tpconfig_invalid()->prefix(TextFormat::RED));
 			return;
 		}
-		$playerConfig = new Config(Path::join($this->owningPlugin->getDataFolder(), "players", $sender->getName() . ".json"));
+		$playerConfig = new Config(Path::join($this->plugin->getDataFolder(), "players", $sender->getName() . ".json"));
 		$playerConfig->setAll($playerSettings);
 		$playerConfig->disableJsonOption(JSON_PRETTY_PRINT)->save();
 	}

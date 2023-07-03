@@ -90,7 +90,7 @@ class Main extends PluginBase implements Listener{
 				}
 			}
 		}
-		$this->updateLanguage($this->getConfig()->get("Language", $this->getServer()->getLanguage()->getLang()));
+		$this->updateLanguage((string)$this->getConfig()->get("Language", $this->getServer()->getLanguage()->getLang()));
 
 		@mkdir(Path::join($this->getDataFolder(), "players"));
 
@@ -206,14 +206,7 @@ class Main extends PluginBase implements Listener{
 	}
 
 	/**
-	 * @phpstan-param array{
-	 * "Teleport Delay": int,
-	 * "Teleport Countdown": bool,
-	 * "Alert Teleporting": bool,
-	 * "Alert Receiver": bool,
-	 * "Random Location Radius": int,
-	 * "Random Location Safety": bool
-	 * } $settings
+	 * @phpstan-param array<string, int|bool> $settings
 	 */
 	public static function updatePlayerSettings(string $playerName, array $settings) : void{
 		// validate settings
