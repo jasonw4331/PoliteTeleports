@@ -26,6 +26,7 @@ use function mt_rand;
 class HandleTeleportTask extends Task{
 	private int $finalTick;
 	private ?Vector3 $standingAt;
+	private ?Vector3 $randomSafeVector;
 	private int $attempt = 0;
 
 	public function __construct(private readonly TeleportRequest $request, int $delayTicks){
@@ -43,6 +44,13 @@ class HandleTeleportTask extends Task{
 		if($fromTarget === null){ // player offline
 			if(Main::getPlayerSettings($this->request->toTarget)['Alert Receiver'])
 				$server->getPlayerExact($this->request->toTarget)?->sendMessage(CustomKnownTranslationFactory::teleport_state_tpingoffline());
+			throw new CancelTaskException();
+		}
+
+		$this->standingAt ??= $fromTarget->getPosition()->asVector3();
+
+		if($config->get('Stand Still', true) === true && $this->standingAt->distance($fromTarget->getPosition()) < 2) {
+			$fromTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_cancelled());
 			throw new CancelTaskException();
 		}
 
@@ -72,8 +80,14 @@ class HandleTeleportTask extends Task{
 					$i--;
 				}
 			}
-			$pos = $fromTarget->getWorld()->getSafeSpawn($fromTarget->getPosition()->add($currentCoords[0], abs($currentCoords[1]), $currentCoords[2]));
-			$toTarget = new class($pos) {
+			$toVector = $fromTarget->getPosition()->add($currentCoords[0], abs($currentCoords[1]), $currentCoords[2]);
+			$chunk = $fromTarget->getWorld()->getOrLoadChunkAtPosition($toVector);
+			if($chunk === null && $this->randomSafeVector === null) {
+				$fromTarget->getWorld()->orderChunkPopulation($toVector->x >> 4, $toVector->z >> 4, null);
+				return; // keep repeating task until chunk loads
+			}
+			$this->randomSafeVector = $fromTarget->getWorld()->getSafeSpawn($toVector);
+			$toTarget = new class($this->randomSafeVector) {
 				public function __construct(private readonly Position $location) {}
 
 				public function getLocation() : Position{
@@ -86,19 +100,12 @@ class HandleTeleportTask extends Task{
 			};
 		}
 
-		$this->standingAt ??= $fromTarget->getPosition()->asVector3();
-
 		$tickDiff = $this->finalTick - $server->getTick();
 		if($tickDiff >= 20 && Main::getPlayerSettings($fromTarget->getName())['Teleport Countdown']){
 			$fromTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_time(
 				CustomKnownTranslationFactory::teleport_state_seconds()->prefix(ceil($tickDiff / 20) . ' ')
 			));
 			return;
-		}
-
-		if($config->get('Stand Still', true) === true && $this->standingAt->distance($fromTarget->getPosition()) < 2) {
-			$fromTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_cancelled());
-			throw new CancelTaskException();
 		}
 
 		if(!$fromTarget->teleport($toTarget->getLocation())){ // likely tp event cancelled by other plugin
