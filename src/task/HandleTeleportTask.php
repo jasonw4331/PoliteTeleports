@@ -18,6 +18,7 @@ use pocketmine\utils\AssumptionFailedError;
 use pocketmine\utils\Config;
 use pocketmine\world\format\Chunk;
 use pocketmine\world\Position;
+use pocketmine\world\World;
 use function abs;
 use function ceil;
 use function min;
@@ -26,7 +27,7 @@ use function mt_rand;
 class HandleTeleportTask extends Task{
 	private int $finalTick;
 	private ?Vector3 $standingAt;
-	private ?Vector3 $randomSafeVector;
+	private ?Vector3 $randomVector;
 	private int $attempt = 0;
 
 	public function __construct(private readonly TeleportRequest $request, int $delayTicks){
@@ -80,14 +81,16 @@ class HandleTeleportTask extends Task{
 					$i--;
 				}
 			}
-			$toVector = $fromTarget->getPosition()->add($currentCoords[0], abs($currentCoords[1]), $currentCoords[2]);
-			$chunk = $fromTarget->getWorld()->getOrLoadChunkAtPosition($toVector);
-			if($chunk === null && $this->randomSafeVector === null) {
-				$fromTarget->getWorld()->orderChunkPopulation($toVector->x >> 4, $toVector->z >> 4, null);
-				return; // keep repeating task until chunk loads
+			$this->randomVector = $fromTarget->getPosition()
+				->add($currentCoords[0], $currentCoords[1], $currentCoords[2])
+				->withComponents(null, min(max($currentCoords[1], World::Y_MIN), World::Y_MAX), null);
+			if(Main::getPlayerSettings($fromTarget->getName())['Random Location Safety'] === true) {
+				$fromTarget->getWorld()->requestSafeSpawn($this->randomVector)->onCompletion(
+					fn(Position $coords) => $this->randomVector = $coords,
+					fn() => $this->getHandler()->cancel()
+				);
 			}
-			$this->randomSafeVector = $fromTarget->getWorld()->getSafeSpawn($toVector);
-			$toTarget = new class($this->randomSafeVector) {
+			$toTarget = new class($this->randomVector) {
 				public function __construct(private readonly Position $location) {}
 
 				public function getLocation() : Position{
