@@ -81,13 +81,16 @@ class HandleTeleportTask extends Task{
 					$i--;
 				}
 			}
-			$this->randomVector = $fromTarget->getPosition()
-				->add($currentCoords[0], $currentCoords[1], $currentCoords[2])
-				->withComponents(null, min(max($currentCoords[1], World::Y_MIN), World::Y_MAX), null);
+			$this->randomVector = Position::fromObject(
+				$fromTarget->getPosition()
+					->add($currentCoords[0], $currentCoords[1], $currentCoords[2])
+					->withComponents(null, min(max($currentCoords[1], World::Y_MIN), World::Y_MAX), null),
+				$fromTarget->getWorld()
+			);
 			if(Main::getPlayerSettings($fromTarget->getName())['Random Location Safety'] === true) {
 				$fromTarget->getWorld()->requestSafeSpawn($this->randomVector)->onCompletion(
 					fn(Position $coords) => $this->randomVector = $coords,
-					fn() => $this->getHandler()->cancel()
+					fn() => $this->getHandler()?->cancel()
 				);
 			}
 			$toTarget = new class($this->randomVector) {

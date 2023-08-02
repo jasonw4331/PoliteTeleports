@@ -21,5 +21,15 @@ $ignoreErrors[] = [
 	'count' => 1,
 	'path' => __DIR__ . '/src/task/HandleTeleportTask.php',
 ];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#1 \\$onSuccess of method pocketmine\\\\promise\\\\Promise\\<pocketmine\\\\world\\\\Position\\>\\:\\:onCompletion\\(\\) expects Closure\\(pocketmine\\\\world\\\\Position\\)\\: void, Closure\\(pocketmine\\\\world\\\\Position\\)\\: pocketmine\\\\world\\\\Position given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/task/HandleTeleportTask.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#2 \\$onFailure of method pocketmine\\\\promise\\\\Promise\\<pocketmine\\\\world\\\\Position\\>\\:\\:onCompletion\\(\\) expects Closure\\(\\)\\: void, Closure\\(\\)\\: \\(void\\|null\\) given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/task/HandleTeleportTask.php',
+];
 
 return ['parameters' => ['ignoreErrors' => $ignoreErrors]];
