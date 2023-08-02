@@ -89,7 +89,7 @@ class HandleTeleportTask extends Task{
 				$fromTarget->getWorld()
 			);
 			if(Main::getPlayerSettings($fromTarget->getName())['Random Location Safety'] === true){
-				$fromTarget->getWorld()->requestSafeSpawn($this->randomVector)->onCompletion(
+				$fromTarget->getWorld()->requestSafeSpawn($this->randomVector->withComponents(null, abs($this->randomVector->y), null))->onCompletion(
 					fn(Position $coords) => $this->randomVector = $coords,
 					fn() => $this->getHandler()?->cancel()
 				);
