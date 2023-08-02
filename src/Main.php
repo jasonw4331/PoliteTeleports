@@ -27,7 +27,7 @@ use function yaml_parse_file;
 
 class Main extends PluginBase implements Listener{
 
-	public CONST RANDOM_KEYNAME = "random";
+	public const RANDOM_KEYNAME = "random";
 
 	/** @var array<string, Language> $languages */
 	private static array $languages = [];
@@ -82,7 +82,7 @@ class Main extends PluginBase implements Listener{
 					Path::join($this->getDataFolder(), "lang", "data")
 				);
 				self::$languages[$languageName] = $language;
-				foreach($languageAliases as $languageAlias => $alias) {
+				foreach($languageAliases as $languageAlias => $alias){
 					if(mb_strtolower($alias) === $languageName){
 						self::$languages[mb_strtolower($languageAlias)] = $language;
 						unset($languageAliases[$languageAlias]);
@@ -90,7 +90,7 @@ class Main extends PluginBase implements Listener{
 				}
 			}
 		}
-		$this->updateLanguage((string)$this->getConfig()->get("Language", $this->getServer()->getLanguage()->getLang()));
+		$this->updateLanguage((string) $this->getConfig()->get("Language", $this->getServer()->getLanguage()->getLang()));
 
 		@mkdir(Path::join($this->getDataFolder(), "players"));
 
@@ -122,8 +122,8 @@ class Main extends PluginBase implements Listener{
 			Config::JSON,
 			(array) $this->getConfig()->get("Defaults", $defaults)
 		);
-		foreach(array_merge($defaults, $playerConfig->getAll()) as $key => $value) {
-			self::$playerSettings[$player->getName()][$key] = match($key) {
+		foreach(array_merge($defaults, $playerConfig->getAll()) as $key => $value){
+			self::$playerSettings[$player->getName()][$key] = match ($key) {
 				"Teleport Delay" => max($value, $defaults["Teleport Delay"]),
 				"Random Location Radius" => min($value, $defaults["Random Location Radius"]),
 				default => $value
