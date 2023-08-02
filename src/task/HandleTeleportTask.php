@@ -21,6 +21,7 @@ use pocketmine\world\Position;
 use pocketmine\world\World;
 use function abs;
 use function ceil;
+use function max;
 use function min;
 use function mt_rand;
 
@@ -50,12 +51,12 @@ class HandleTeleportTask extends Task{
 
 		$this->standingAt ??= $fromTarget->getPosition()->asVector3();
 
-		if($config->get('Stand Still', true) === true && $this->standingAt->distance($fromTarget->getPosition()) < 2) {
+		if($config->get('Stand Still', true) === true && $this->standingAt->distance($fromTarget->getPosition()) < 2){
 			$fromTarget->sendMessage(CustomKnownTranslationFactory::teleport_state_cancelled());
 			throw new CancelTaskException();
 		}
 
-		if($this->request->toTarget !== Main::RANDOM_KEYNAME) {
+		if($this->request->toTarget !== Main::RANDOM_KEYNAME){
 			$toTarget = $server->getPlayerExact($this->request->toTarget);
 			if($toTarget === null){ // player offline
 				if(Main::getPlayerSettings($this->request->fromTarget)['Alert Receiver'])
@@ -75,9 +76,9 @@ class HandleTeleportTask extends Task{
 			$radius = min(Main::getPlayerSettings($fromTarget->getName())['Random Location Radius'], 2 ** 21); // hard cap teleport distance at around 2 million blocks
 			/** @var array{int, int, int} $currentCoords */
 			$currentCoords = [];
-			for($i = 0; $i < 3; ++$i) {
+			for($i = 0; $i < 3; ++$i){
 				$value = $currentCoords[$i] = mt_rand(-$radius, $radius);
-				if(abs($value) < Server::getInstance()->getAllowedViewDistance($fromTarget->getViewDistance()) * Chunk::EDGE_LENGTH) { // always teleport the player outside render distance
+				if(abs($value) < Server::getInstance()->getAllowedViewDistance($fromTarget->getViewDistance()) * Chunk::EDGE_LENGTH){ // always teleport the player outside render distance
 					$i--;
 				}
 			}
@@ -87,14 +88,14 @@ class HandleTeleportTask extends Task{
 					->withComponents(null, min(max($currentCoords[1], World::Y_MIN), World::Y_MAX), null),
 				$fromTarget->getWorld()
 			);
-			if(Main::getPlayerSettings($fromTarget->getName())['Random Location Safety'] === true) {
+			if(Main::getPlayerSettings($fromTarget->getName())['Random Location Safety'] === true){
 				$fromTarget->getWorld()->requestSafeSpawn($this->randomVector)->onCompletion(
 					fn(Position $coords) => $this->randomVector = $coords,
 					fn() => $this->getHandler()?->cancel()
 				);
 			}
-			$toTarget = new class($this->randomVector) {
-				public function __construct(private readonly Position $location) {}
+			$toTarget = new class($this->randomVector){
+				public function __construct(private readonly Position $location){ }
 
 				public function getLocation() : Position{
 					return $this->location;
@@ -125,7 +126,7 @@ class HandleTeleportTask extends Task{
 			$this->attempt++;
 
 			$retryInterval = $config->get('Retry Interval', -1);
-			if($retryInterval < 1) {
+			if($retryInterval < 1){
 				$this->attempt = 2; // prevent reuse of this task object
 				throw new CancelTaskException();
 			}
@@ -135,7 +136,7 @@ class HandleTeleportTask extends Task{
 		}
 
 		$requester = $server->getPlayerExact($this->request->requester);
-		if($requester !== null) {
+		if($requester !== null){
 			Command::broadcastCommandMessage( // inform admins of player teleport
 				$requester,
 				KnownTranslationFactory::commands_tp_success($fromTarget->getName(), $toTarget->getName())
