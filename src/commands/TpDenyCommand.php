@@ -9,6 +9,8 @@ use jasonw4331\PoliteTeleports\Main;
 use jasonw4331\PoliteTeleports\TeleportRequest;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\command\utils\InvalidCommandSyntaxException;
+use pocketmine\player\Player;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\plugin\PluginOwnedTrait;
 use pocketmine\utils\TextFormat;
@@ -35,6 +37,10 @@ class TpDenyCommand extends Command implements PluginOwned{
 	 * @inheritDoc
 	 */
 	public function execute(CommandSender $sender, string $commandLabel, array $args) : void{
+		if(!$sender instanceof Player){
+			throw new InvalidCommandSyntaxException();
+		}
+
 		if(!isset($this->plugin->getActiveRequests()[$sender->getName()]) || count($this->plugin->getActiveRequests()[$sender->getName()]) === 0){
 			$sender->sendMessage(CustomKnownTranslationFactory::command_tpdeny_norequest());
 			return;

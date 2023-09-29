@@ -8,6 +8,8 @@ use jasonw4331\PoliteTeleports\lang\CustomKnownTranslationFactory;
 use jasonw4331\PoliteTeleports\Main;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\command\utils\InvalidCommandSyntaxException;
+use pocketmine\player\Player;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\plugin\PluginOwnedTrait;
 use pocketmine\utils\Config;
@@ -44,6 +46,10 @@ final class TpConfig extends Command implements PluginOwned{
 	 * @inheritDoc
 	 */
 	public function execute(CommandSender $sender, string $commandLabel, array $args) : void{
+		if(!$sender instanceof Player){
+			throw new InvalidCommandSyntaxException();
+		}
+
 		$playerSettings = Main::getPlayerSettings($sender->getName());
 
 		if(count($args) < 1){
